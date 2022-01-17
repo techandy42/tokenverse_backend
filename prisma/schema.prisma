@@ -1,0 +1,72 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            Int          @id @default(autoincrement())
+  email         String       @default("")
+  address       String       @unique
+  companyName   String       @default("")
+  createdAt     DateTime     @default(now()) @map("created_at")
+  description   String       @default("")
+  facebookLink  String       @default("")
+  image         Json?
+  instagramLink String       @default("")
+  linkedInLink  String       @default("")
+  mainLink      String       @default("")
+  twitterLink   String       @default("")
+  updatedAt     DateTime     @updatedAt @map("updated_at")
+  userName      String       @unique
+  uuid          String       @unique @default(uuid())
+  role          UserRole     @default(USER)
+  collections   Collection[]
+  nfts          NFT[]
+
+  @@map("users")
+}
+
+model NFT {
+  id             Int        @id @default(autoincrement())
+  uuid           String     @unique @default(uuid())
+  createdAt      DateTime   @default(now()) @map("created_at")
+  updatedAt      DateTime   @updatedAt @map("updated_at")
+  name           String     
+  blockchainType String     
+  fileUrl        String     
+  multimediaFile Json?
+  creator        String     
+  price          Int        @default(0)
+  onSale         Boolean    @default(false)
+  frozen         Boolean    @default(false)
+  tokenId        Int        @unique
+  userId         Int
+  collectionId   Int
+  collection     Collection @relation(fields: [collectionId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  user           User       @relation(fields: [userId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+
+  @@map("nfts")
+}
+
+model Collection {
+  id        Int      @id @default(autoincrement())
+  uuid      String   @unique @default(uuid())
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  name      String   @unique
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  nfts      NFT[]
+
+  @@map("collections")
+}
+
+enum UserRole {
+  USER
+  ADMIN
+  SUPERADMIN
+}
