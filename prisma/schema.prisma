@@ -1,3 +1,6 @@
+// command for migrating prisma
+// npx prisma migrate dev --name init
+
 generator client {
   provider = "prisma-client-js"
 }
@@ -11,44 +14,65 @@ model User {
   id            Int          @id @default(autoincrement())
   email         String       @default("")
   address       String       @unique
-  companyName   String       @default("")
+  companyName   String       @default("") @map("company_name")
   createdAt     DateTime     @default(now()) @map("created_at")
   description   String       @default("")
-  facebookLink  String       @default("")
+  facebookLink  String       @default("") @map("facebook_link")
   image         Json?
-  instagramLink String       @default("")
-  linkedInLink  String       @default("")
-  mainLink      String       @default("")
-  twitterLink   String       @default("")
+  instagramLink String       @default("") @map("instagram_link")
+  linkedInLink  String       @default("") @map("linked_in_link")
+  mainLink      String       @default("") @map("main_link")
+  twitterLink   String       @default("") @map("twitter_link")
   updatedAt     DateTime     @updatedAt @map("updated_at")
-  userName      String       @unique
-  uuid          String       @unique @default(uuid())
+  userName      String       @unique @map("user_name")
+  uuid          String       @unique @default(uuid()) 
+  verified      Boolean      @default(false)
+  verificationDate DateTime? @map("verification_date")
+  verificationLink String    @default("") @map("verification_link")
   role          UserRole     @default(USER)
   collections   Collection[]
-  nfts          NFT[]
+  nfts          NFT[]        @relation("user")
+  nftslease    NFT[]         @relation("borrower")
 
   @@map("users")
 }
 
 model NFT {
-  id             Int        @id @default(autoincrement())
-  uuid           String     @unique @default(uuid())
-  createdAt      DateTime   @default(now()) @map("created_at")
-  updatedAt      DateTime   @updatedAt @map("updated_at")
-  name           String     
-  blockchainType String     
-  fileUrl        String     
-  multimediaFile Json?
-  creator        String     
-  price          Int        @default(0)
-  onSale         Boolean    @default(false)
-  frozen         Boolean    @default(false)
-  tokenId        Int        @unique
-  userId         Int
-  collectionId   Int
-  collection     Collection @relation(fields: [collectionId], references: [id], onUpdate: Cascade, onDelete: Cascade)
-  user           User       @relation(fields: [userId], references: [id], onUpdate: Cascade, onDelete: Cascade)
-
+  id                 Int        @id @default(autoincrement())
+  uuid               String     @unique @default(uuid())
+  createdAt          DateTime   @default(now()) @map("created_at")
+  updatedAt          DateTime   @updatedAt @map("updated_at")
+  name               String     
+  blockchainType     BlockchainType     @map("blockchain_type")
+  fileUrl            String     @map("file_url")
+  // File     
+  multimediaFile     Json?      @map("multimedia_file")
+  creator            String     
+  price              Int        @default(0)
+  isOnMarket           Boolean    @default(false) @map("is_on_sale")
+  isMetadataFrozen   Boolean    @default(false) @map("is_metadata_frozen")
+  tokenId            Int        @unique @map("token_id")
+  itemId             Int        @unique @map("item_id")
+  userId             Int        @map("user_id")
+  borrowerId         Int        @map("borrower_id")
+  collectionId       Int        @map("collection_id")
+  collection         Collection @relation(fields: [collectionId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  user               User       @relation("user", fields: [userId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  borrower           User       @relation("borrower", fields: [borrowerId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  endSaleDate        DateTime   @default(now()) @map("end_sale_date")
+  startLeaseDate     DateTime   @default(now()) @map("start_lease_date")
+  endLeaseDate       DateTime   @default(now()) @map("end_lease_date")
+  saleType           SaleType   @default(COLLECTIBLE) @map("sale_type")
+  collectibleCategory CollectibleCategory   @default(MISCELLANEOUS) @map("collectible_category")
+  productKeyRealLifeAssetCategory ProductKeyRealLifeAssetCategory   @default(MISCELLANEOUS) @map("product_key_real_life_asset_category")
+  productKeyVirtualAssetCategory ProductKeyVirtualAssetCategory   @default(MISCELLANEOUS) @map("product_key_virtual_asset_category")
+  isSensitiveContent Boolean    @default(false) @map("is_sensitive_content")
+  // properties --> { propertyName: string | [number, number] } 
+  properties         Json? 
+  // reviews --> userId / rating / comment
+  reviews            Json?
+  ercType            ErcType     @map("erc_type")    
+  usersRefunded      String[]   @map("users_refunded")
   @@map("nfts")
 }
 
@@ -58,15 +82,81 @@ model Collection {
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
   name      String   @unique
-  userId    Int
+  userId    Int      @map("user_id")
   user      User     @relation(fields: [userId], references: [id], onUpdate: Cascade, onDelete: Cascade)
   nfts      NFT[]
 
   @@map("collections")
 }
 
+enum BlockchainType {
+  POLYGON
+}
+
+enum ErcType {
+  ERC_721
+  ERC_1155
+}
+
 enum UserRole {
   USER
   ADMIN
   SUPERADMIN
+}
+
+enum SaleType {
+  COLLECTIBLE
+  PRODUCT_KEY_REAL_LIFE_ASSET
+  PRODUCT_KEY_VIRTUAL_ASSET 
+}
+
+enum CollectibleCategory {
+  MISCELLANEOUS
+  ABSTRACT
+  PIXEL
+  CARTOON
+  CLASSIC
+  COMPUTER_GRAPHIC
+  VIDEO_GAME
+  SCENERY
+  PERFORMANCE
+  PHOTOGRAPHY
+  ACHITECTURE
+  MUSIC
+  MEME
+  DOMAIN_NAME
+  SPORTS_CARD
+  TRADING_CARD
+}
+
+enum ProductKeyRealLifeAssetCategory {
+  MISCELLANEOUS
+  CLOTHING_WEARABLE
+  BEAUTY_ACCESSORY
+  TOOL_EQUIPMENT
+  MATERIAL_MACHINE_PART
+  ELECTRONIC_APPLIANCE
+  GROCERY_FOOD
+  WEAPON
+  FURNITURE
+  REAL_ESTATE
+  TOY_GAME
+  HOME_SUPPLY
+  MEDICAL_MAGIC_ITEM
+}
+
+enum ProductKeyVirtualAssetCategory {
+  MISCELLANEOUS
+  CLOTHING_WEARABLE
+  BEAUTY_ACCESSORY
+  TOOL_EQUIPMENT
+  MATERIAL_MACHINE_PART
+  ELECTRONIC_APPLIANCE
+  GROCERY_FOOD
+  WEAPON
+  FURNITURE
+  REAL_ESTATE
+  TOY_GAME
+  HOME_SUPPLY
+  MEDICAL_MAGIC_ITEM
 }
