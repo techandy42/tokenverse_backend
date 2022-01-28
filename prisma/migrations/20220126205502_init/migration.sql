@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "nfts" ADD COLUMN     "start_sale_date" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP;
