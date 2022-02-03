@@ -4,6 +4,7 @@ import {
   selectionUser,
   selectionCollection,
   selectionNFT,
+  selectionReview,
 } from '../constants/selections'
 import {
   userPostValidationRules,
@@ -26,6 +27,8 @@ router.post(
         data: {
           address,
           userName: address,
+          likedNfts: new Array(),
+          cartNfts: new Array(),
         },
       })
       return res.json(user)
@@ -55,14 +58,14 @@ router.get('/:address', async (req: Request, res: Response) => {
             ...selectionNFT,
           },
         },
-        nftslease: {
+        nftscreated: {
           select: {
             ...selectionNFT,
           },
         },
-        nftscreated: {
+        reviews: {
           select: {
-            ...selectionNFT,
+            ...selectionReview,
           },
         },
       },
@@ -71,6 +74,102 @@ router.get('/:address', async (req: Request, res: Response) => {
   } catch (error) {
     console.log(error)
     return res.status(400).json({ error: 'User not found' })
+  }
+})
+
+router.get('/liked/:address', async (req: Request, res: Response) => {
+  const address = req.params.address
+  try {
+    const user = await prisma.user.findUnique({
+      where: { address },
+    })
+    if (!user) throw { error: `Cannot find the user: ${address}` }
+    // fetch liked nfts
+    const likedNftTokenIds = user.likedNfts
+    const listLikedNfts = []
+    for (let i = 0; i < likedNftTokenIds.length; i++) {
+      const tokenId = likedNftTokenIds[0]
+      const likedNft = await prisma.nFT.findUnique({
+        where: { tokenId },
+      })
+      if (likedNft) listLikedNfts.push(likedNft)
+    }
+    return res.json(listLikedNfts)
+  } catch (error) {
+    console.log(error)
+    return res.status(400).json({ error: 'User not found' })
+  }
+})
+
+router.get('/cart/:address', async (req: Request, res: Response) => {
+  const address = req.params.address
+  try {
+    const user = await prisma.user.findUnique({
+      where: { address },
+    })
+    if (!user) throw { error: `Cannot find the user: ${address}` }
+    // fetch cart nfts
+    const cartNftTokenIds = user.cartNfts
+    const cartLikedNfts = []
+    for (let i = 0; i < cartNftTokenIds.length; i++) {
+      const tokenId = cartNftTokenIds[0]
+      const cartNft = await prisma.nFT.findUnique({
+        where: { tokenId },
+      })
+      if (cartNft) cartLikedNfts.push(cartNft)
+    }
+    return res.json(cartLikedNfts)
+  } catch (error) {
+    console.log(error)
+    return res.status(400).json({ error: 'User not found' })
+  }
+})
+
+router.put('/liked/:address', async (req: Request, res: Response) => {
+  const address = req.params.address
+  const { tokenId } = req.body
+  try {
+    let user = await prisma.user.findUnique({ where: { address } })
+    if (!user) throw { error: `Cannot find the user: ${address}` }
+    let nft = await prisma.nFT.findUnique({ where: { tokenId } })
+    if (!nft) throw { error: `Cannot find the NFT: ${tokenId}` }
+    const likedNfts = user.likedNfts
+    user = await prisma.user.update({
+      where: { address },
+      data: {
+        likedNfts: [...likedNfts, tokenId],
+      },
+    })
+    return res.json(user)
+  } catch (error) {
+    console.log(error)
+    return res
+      .status(400)
+      .json({ error: `User not found or invalid tokenId ${tokenId}` })
+  }
+})
+
+router.put('/cart/:address', async (req: Request, res: Response) => {
+  const address = req.params.address
+  const { tokenId } = req.body
+  try {
+    let user = await prisma.user.findUnique({ where: { address } })
+    if (!user) throw { error: `Cannot find the user: ${address}` }
+    let nft = await prisma.nFT.findUnique({ where: { tokenId } })
+    if (!nft) throw { error: `Cannot find the NFT: ${tokenId}` }
+    const cartNfts = user.cartNfts
+    user = await prisma.user.update({
+      where: { address },
+      data: {
+        cartNfts: [...cartNfts, tokenId],
+      },
+    })
+    return res.json(user)
+  } catch (error) {
+    console.log(error)
+    return res
+      .status(400)
+      .json({ error: `User not found or invalid tokenId ${tokenId}` })
   }
 })
 

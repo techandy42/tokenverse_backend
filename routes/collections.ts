@@ -4,6 +4,7 @@ import {
   selectionUser,
   selectionCollection,
   selectionNFT,
+  selectionReview,
 } from '../constants/selections'
 
 const prisma = new PrismaClient()
@@ -59,6 +60,11 @@ router.get('/:name', async (req: Request, res: Response) => {
         nfts: {
           select: {
             ...selectionNFT,
+            reviews: {
+              select: {
+                ...selectionReview,
+              },
+            },
           },
         },
       },
@@ -89,7 +95,6 @@ router.put('/change-name/:name', async (req: Request, res: Response) => {
         name: newName,
       },
     })
-    console.log(collection)
     return res.json(collection)
   } catch (error) {
     console.log(error)
@@ -170,19 +175,21 @@ router.get('/', async (req: Request, res: Response) => {
         nfts: {
           select: {
             ...selectionNFT,
-            borrower: {
+            reviews: {
               select: {
-                ...selectionUser,
+                ...selectionReview,
               },
             },
           },
         },
       },
     })
-    res.json(collections)
+    return res.json(collections)
   } catch (error) {
     console.log(error)
-    res.status(400).json({ error: 'Error occurred while fetching collections' })
+    return res
+      .status(400)
+      .json({ error: 'Error occurred while fetching collections' })
   }
 })
 

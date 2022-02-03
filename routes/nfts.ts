@@ -4,17 +4,24 @@ import {
   selectionUser,
   selectionCollection,
   selectionNFT,
+  selectionReview,
 } from '../constants/selections'
+import {
+  nftArraysInitializer,
+  nftSaleLeaseAuctionInitializer,
+} from '../constants/initializers'
 import {
   nftPostValidationRules,
   nftPutSaleValidationRules,
   checkForErrors,
   isUrlValid,
 } from '../functions/validations'
+import nftTransferInitializer from '../functions/nftTransferInitializer'
 
 const prisma = new PrismaClient()
 const router = express.Router()
 
+/* Create one NFT */
 router.post(
   '/',
   nftPostValidationRules,
@@ -44,15 +51,13 @@ router.post(
         fileUrl,
         tokenId: parseInt(tokenId),
         itemId: parseInt(itemId),
-        collection,
         ercType,
-        like: new Array(),
+        ...nftArraysInitializer,
       }
       const nft = await prisma.nFT.create({
         data: {
           ...data,
           user: { connect: { address } },
-          borrower: { connect: { address } },
           creator: { connect: { address } },
           collection: { connect: { name: collection } },
         },
@@ -67,53 +72,131 @@ router.post(
   },
 )
 
+/* Create multiple NFTs */
+router.post(
+  '/multiple',
+  nftPostValidationRules,
+  checkForErrors,
+  async (req: Request, res: Response) => {
+    const {
+      address,
+      names,
+      blockchainType,
+      fileUrls,
+      multimediaFiles,
+      tokenIds,
+      itemIds,
+      collection,
+      ercType,
+    } = req.body
+    try {
+      const namesLength = names.length
+      if (
+        namesLength !== fileUrls.length ||
+        namesLength !== multimediaFiles.length ||
+        namesLength !== tokenIds.length ||
+        namesLength !== itemIds.length
+      ) {
+        throw { error: 'The length of the given values are different' }
+      }
+      const nfts: any = []
+      for (let i = 0; i < namesLength; i++) {
+        const multimediaFile = multimediaFiles[i]
+        const fileUrl = fileUrls[i]
+        const name = names[i]
+        const tokenId = tokenIds[i]
+        const itemId = itemIds[i]
+        const multimediaFileTypeChecked =
+          multimediaFile === null ? undefined : multimediaFile
+        const fileUrlValidity =
+          fileUrl === '' || isUrlValid(fileUrl) ? true : false
+        if (!fileUrlValidity) throw { error: 'Invalid fileUrl' }
+        const data = {
+          multimediaFile: multimediaFileTypeChecked,
+          name,
+          blockchainType,
+          fileUrl,
+          tokenId: parseInt(tokenId),
+          itemId: parseInt(itemId),
+          ercType,
+          ...nftArraysInitializer,
+        }
+        const nft = await prisma.nFT.create({
+          data: {
+            ...data,
+            user: { connect: { address } },
+            creator: { connect: { address } },
+            collection: { connect: { name: collection } },
+          },
+        })
+        nfts.push(nft)
+      }
+      return res.json(nfts)
+    } catch (error) {
+      console.log(error)
+      return res.status(400).json({ error: `Error while creating the tokens` })
+    }
+  },
+)
+
+/* Puts the NFT on market */
 router.put('/on-market/:tokenId', async (req: Request, res: Response) => {
   let tokenId: string | number = req.params.tokenId
   tokenId = parseInt(tokenId)
   const {
+    // data
     price,
-    isMetadataFrozen,
+    isOnSale,
+    isOnLease,
+    isOnAuction,
     startSaleDate,
     endSaleDate,
+    // metadata
     saleType,
     collectibleCategory,
     productKeyRealLifeAssetCategory,
     productKeyVirtualAssetCategory,
     isSensitiveContent,
-    properties,
-    leasePrice,
+    descriptions,
+    propertiesKey,
+    propertiesValue,
+    imagesKey,
+    imagesValue,
+    levelsKey,
+    levelsValueNum,
+    levelsValueDen,
   } = req.body
-  const propertiesTypeChecked = properties === null ? undefined : properties
   try {
     let nft = await prisma.nFT.findUnique({
       where: { tokenId },
     })
-    const data = !nft?.isMetadataFrozen
-      ? {
-          price: parseInt(price),
-          isOnMarket: true,
-          isMetadataFrozen,
-          startSaleDate,
-          endSaleDate,
-          saleType,
-          collectibleCategory,
-          productKeyRealLifeAssetCategory,
-          productKeyVirtualAssetCategory,
-          isSensitiveContent,
-          properties: propertiesTypeChecked,
-          leasePrice: parseInt(leasePrice),
-        }
-      : {
-          price: parseInt(price),
-          isOnMarket: true,
-          startSaleDate,
-          endSaleDate,
-          saleType,
-          collectibleCategory,
-          productKeyRealLifeAssetCategory,
-          productKeyVirtualAssetCategory,
-          leasePrice: parseInt(leasePrice),
-        }
+    let data = {
+      price: parseInt(price),
+      isOnSale,
+      isOnLease,
+      isOnAuction,
+      startSaleDate,
+      endSaleDate,
+    }
+
+    if (nft?.isMetadataFrozen) {
+      const metadata = {
+        saleType,
+        collectibleCategory,
+        productKeyRealLifeAssetCategory,
+        productKeyVirtualAssetCategory,
+        isSensitiveContent,
+        descriptions,
+        propertiesKey,
+        propertiesValue,
+        imagesKey,
+        imagesValue,
+        levelsKey,
+        levelsValueNum,
+        levelsValueDen,
+      }
+      data = { ...data, ...metadata }
+    }
     let modifiedNft = await prisma.nFT.update({
       where: { tokenId },
       data: data,
@@ -127,17 +210,12 @@ router.put('/on-market/:tokenId', async (req: Request, res: Response) => {
   }
 })
 
+/* Puts the NFT off market */
 router.put('/off-market/:tokenId', async (req: Request, res: Response) => {
   let tokenId: string | number = req.params.tokenId
   tokenId = parseInt(tokenId)
   try {
-    const data = {
-      price: 0,
-      leasePrice: 0,
-      isOnMarket: false,
-      startSaleDate: new Date(),
-      endSaleDate: new Date(),
-    }
+    const data = nftSaleLeaseAuctionInitializer
     let nft = await prisma.nFT.update({
       where: { tokenId },
       data: data,
@@ -151,6 +229,7 @@ router.put('/off-market/:tokenId', async (req: Request, res: Response) => {
   }
 })
 
+/* Edits the data of the NFT */
 router.put(
   '/edit/:tokenId',
   checkForErrors,
@@ -168,11 +247,17 @@ router.put(
       productKeyRealLifeAssetCategory,
       productKeyVirtualAssetCategory,
       isSensitiveContent,
-      properties,
+      descriptions,
+      propertiesKey,
+      propertiesValue,
+      imagesKey,
+      imagesValue,
+      levelsKey,
+      levelsValueNum,
+      levelsValueDen,
     } = req.body
     const multimediaFileTypeChecked =
       multimediaFile === null ? undefined : multimediaFile
-    const propertiesTypeChecked = properties === null ? undefined : properties
     try {
       const fileUrlValidity =
         fileUrl === '' || isUrlValid(fileUrl) ? true : false
@@ -182,11 +267,6 @@ router.put(
         select: {
           ...selectionNFT,
           user: {
-            select: {
-              ...selectionUser,
-            },
-          },
-          borrower: {
             select: {
               ...selectionUser,
             },
@@ -211,35 +291,44 @@ router.put(
       if (!nft) throw { error: `NFT with tokenId ${tokenId} does not exist` }
       if (nft?.isMetadataFrozen)
         throw { error: `NFT with tokenId ${tokenId} has its metadata frozen` }
+
       // delete the old NFT
       await prisma.nFT.delete({ where: { tokenId } })
+
       // create a new NFT with modified data
       const data = {
         name,
         fileUrl,
         multimediaFile: multimediaFileTypeChecked,
         isMetadataFrozen,
+        collection,
         saleType,
         collectibleCategory,
         productKeyRealLifeAssetCategory,
         productKeyVirtualAssetCategory,
         isSensitiveContent,
-        properties: propertiesTypeChecked,
+        descriptions,
+        propertiesKey,
+        propertiesValue,
+        imagesKey,
+        imagesValue,
+        levelsKey,
+        levelsValueNum,
+        levelsValueDen,
         blockchainType: nft.blockchainType,
         tokenId: nft.tokenId,
         itemId: nft.itemId,
         ercType: nft.ercType,
-        like: new Array(),
       }
       const newNft = await prisma.nFT.create({
         data: {
           ...data,
           user: { connect: { address: nft.user.address } },
-          borrower: { connect: { address: nft.borrower.address } },
           creator: { connect: { address: nft.creator.address } },
           collection: { connect: { name: collection } },
         },
       })
+
       res.json(newNft)
     } catch (error) {
       console.log(error)
@@ -250,6 +339,7 @@ router.put(
   },
 )
 
+/* changes the address of the NFT */
 router.put(
   '/transfer/:tokenId',
   nftPutSaleValidationRules,
@@ -268,11 +358,6 @@ router.put(
               ...selectionUser,
             },
           },
-          borrower: {
-            select: {
-              ...selectionUser,
-            },
-          },
           creator: {
             select: {
               ...selectionUser,
@@ -286,41 +371,23 @@ router.put(
         },
       })
       if (!nft) throw { error: `NFT with tokenId ${tokenId} does not exist` }
+
       // delete the old NFT
       await prisma.nFT.delete({ where: { tokenId } })
+
       // create a new NFT with modified data
       const multimediaFileTypeChecked = JSON.stringify(nft.multimediaFile)
-      const propertiesTypeChecked = JSON.stringify(nft.properties)
-      const data = {
-        name: nft.name,
-        fileUrl: nft.fileUrl,
-        multimediaFile: multimediaFileTypeChecked,
-        isMetadataFrozen: nft.isMetadataFrozen,
-        saleType: nft.saleType,
-        collectibleCategory: nft.collectibleCategory,
-        productKeyRealLifeAssetCategory: nft.productKeyRealLifeAssetCategory,
-        productKeyVirtualAssetCategory: nft.productKeyVirtualAssetCategory,
-        isSensitiveContent: nft.isSensitiveContent,
-        properties: propertiesTypeChecked,
-        blockchainType: nft.blockchainType,
-        tokenId: nft.tokenId,
-        itemId: nft.itemId,
-        ercType: nft.ercType,
-        like: new Array(),
-        price: 0,
-        isOnMarket: false,
-        startSaleDate: new Date(),
-        endSaleDate: new Date(),
-      }
+      let data = nftTransferInitializer(nft, multimediaFileTypeChecked)
+      data = { ...data, ...nftSaleLeaseAuctionInitializer }
       const newNft = await prisma.nFT.create({
         data: {
           ...data,
           user: { connect: { address } },
-          borrower: { connect: { address } },
           creator: { connect: { address: nft.creator.address } },
           collection: { connect: { name: nft.collection.name } },
         },
       })
+
       res.json(newNft)
     } catch (error) {
       console.log(error)
@@ -331,94 +398,11 @@ router.put(
   },
 )
 
-router.put(
-  '/lease/:tokenId',
-  nftPutSaleValidationRules,
-  checkForErrors,
-  async (req: Request, res: Response) => {
-    let tokenId: string | number = req.params.tokenId
-    tokenId = parseInt(tokenId)
-    const { address, startLeaseDate, endLeaseDate } = req.body
-    try {
-      let nft = await prisma.nFT.findUnique({
-        where: { tokenId },
-        select: {
-          ...selectionNFT,
-          user: {
-            select: {
-              ...selectionUser,
-            },
-          },
-          borrower: {
-            select: {
-              ...selectionUser,
-            },
-          },
-          creator: {
-            select: {
-              ...selectionUser,
-            },
-          },
-          collection: {
-            select: {
-              ...selectionCollection,
-            },
-          },
-        },
-      })
-      if (!nft) throw { error: `NFT with tokenId ${tokenId} does not exist` }
-      // delete the old NFT
-      await prisma.nFT.delete({ where: { tokenId } })
-      // create a new NFT with modified data
-      const multimediaFileTypeChecked = JSON.stringify(nft.multimediaFile)
-      const propertiesTypeChecked = JSON.stringify(nft.properties)
-      const data = {
-        name: nft.name,
-        fileUrl: nft.fileUrl,
-        multimediaFile: multimediaFileTypeChecked,
-        isMetadataFrozen: nft.isMetadataFrozen,
-        saleType: nft.saleType,
-        collectibleCategory: nft.collectibleCategory,
-        productKeyRealLifeAssetCategory: nft.productKeyRealLifeAssetCategory,
-        productKeyVirtualAssetCategory: nft.productKeyVirtualAssetCategory,
-        isSensitiveContent: nft.isSensitiveContent,
-        properties: propertiesTypeChecked,
-        blockchainType: nft.blockchainType,
-        tokenId: nft.tokenId,
-        itemId: nft.itemId,
-        ercType: nft.ercType,
-        like: new Array(),
-        priceLease: 0,
-        isOnMarket: false,
-        startLeaseDate,
-        endLeaseDate,
-      }
-      const newNft = await prisma.nFT.create({
-        data: {
-          ...data,
-          user: { connect: { address: nft.user.address } },
-          borrower: { connect: { address } },
-          creator: { connect: { address: nft.creator.address } },
-          collection: { connect: { name: nft.collection.name } },
-        },
-      })
-      res.json(newNft)
-    } catch (error) {
-      console.log(error)
-      return res
-        .status(400)
-        .json({ error: `Error while updating the token ${tokenId}` })
-    }
-  },
-)
-
+/* Deletes the NFT */
 router.delete('/:tokenId', async (req: Request, res: Response) => {
   let tokenId: string | number = req.params.tokenId
   tokenId = parseInt(tokenId)
   try {
-    let nft = await prisma.nFT.findUnique({ where: { tokenId } })
-    if (nft?.isMetadataFrozen)
-      throw { error: `NFT with tokenId ${tokenId} has its metadata frozen` }
     await prisma.nFT.delete({
       where: { tokenId },
     })
@@ -431,9 +415,33 @@ router.delete('/:tokenId', async (req: Request, res: Response) => {
   }
 })
 
+/* Fetches all NFTs */
 router.get('/', async (req: Request, res: Response) => {
   try {
-    const nfts = await prisma.nFT.findMany({})
+    const nfts = await prisma.nFT.findMany({
+      select: {
+        user: {
+          select: {
+            ...selectionUser,
+          },
+        },
+        creator: {
+          select: {
+            ...selectionUser,
+          },
+        },
+        collection: {
+          select: {
+            ...selectionCollection,
+          },
+        },
+        reviews: {
+          select: {
+            ...selectionReview,
+          },
+        },
+      },
+    })
     res.json(nfts)
   } catch (error) {
     console.log(error)
@@ -441,12 +449,35 @@ router.get('/', async (req: Request, res: Response) => {
   }
 })
 
+/* Fetches one NFT by tokenId */
 router.get('/:tokenId', async (req: Request, res: Response) => {
   let tokenId: string | number = req.params.tokenId
   tokenId = parseInt(tokenId)
   try {
     const nft = await prisma.nFT.findUnique({
       where: { tokenId },
+      select: {
+        user: {
+          select: {
+            ...selectionUser,
+          },
+        },
+        creator: {
+          select: {
+            ...selectionUser,
+          },
+        },
+        collection: {
+          select: {
+            ...selectionCollection,
+          },
+        },
+        reviews: {
+          select: {
+            ...selectionReview,
+          },
+        },
+      },
     })
     res.json(nft)
   } catch (error) {

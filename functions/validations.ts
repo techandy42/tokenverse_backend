@@ -3,6 +3,8 @@ import { body, validationResult } from 'express-validator'
 
 export const userPostValidationRules = [body('address').isEthereumAddress()]
 
+export const reviewPostValidationRules = [body('address').isEthereumAddress()]
+
 export function isEmailValid(email: string) {
   if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
     return true

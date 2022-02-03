@@ -31,12 +31,13 @@ model User {
   uuid          String       @unique @default(uuid()) 
   verified      Boolean      @default(false)
   verificationDate DateTime? @map("verification_date")
-  verificationLink String    @default("") @map("verification_link")
   role          UserRole     @default(USER)
+  likedNfts     Int[]        
+  cartNfts      Int[]        
   collections   Collection[]
   nfts          NFT[]        @relation("user")
-  nftslease    NFT[]         @relation("borrower")
-  nftscreated  NFT[]         @relation("creator")
+  nftscreated   NFT[]        @relation("creator")
+  reviews       Review[]     
   @@map("users")
 }
 
@@ -51,35 +52,52 @@ model NFT {
   // File     
   multimediaFile     Json?      @map("multimedia_file")    
   price              Int        @default(0)
-  isOnMarket           Boolean    @default(false) @map("is_on_sale")
+  isOnSale           Boolean    @default(false) @map("is_on_sale")
+  isOnLease          Boolean    @default(false) @map("is_on_lease")
+  isOnAuction        Boolean    @default(false) @map("is_on_auction")
   isMetadataFrozen   Boolean    @default(false) @map("is_metadata_frozen")
   tokenId            Int        @unique @map("token_id")
   itemId             Int        @unique @map("item_id")
   userId             Int        @map("user_id")
-  borrowerId         Int        @map("borrower_id")
   collectionId       Int        @map("collection_id")
   creatorId          Int        @map("creator_id")
   collection         Collection @relation(fields: [collectionId], references: [id], onUpdate: Cascade, onDelete: Cascade)
   user               User       @relation("user", fields: [userId], references: [id], onUpdate: Cascade, onDelete: Cascade)
-  borrower           User       @relation("borrower", fields: [borrowerId], references: [id], onUpdate: Cascade, onDelete: Cascade)
-  creator           User       @relation("creator", fields: [creatorId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  creator            User       @relation("creator", fields: [creatorId], references: [id], onUpdate: Cascade, onDelete: Cascade)
   startSaleDate      DateTime   @default(now()) @map("start_sale_date")
   endSaleDate        DateTime   @default(now()) @map("end_sale_date")
-  startLeaseDate     DateTime   @default(now()) @map("start_lease_date")
-  endLeaseDate       DateTime   @default(now()) @map("end_lease_date")
   saleType           SaleType   @default(COLLECTIBLE) @map("sale_type")
   collectibleCategory CollectibleCategory   @default(MISCELLANEOUS) @map("collectible_category")
   productKeyRealLifeAssetCategory ProductKeyRealLifeAssetCategory   @default(MISCELLANEOUS) @map("product_key_real_life_asset_category")
   productKeyVirtualAssetCategory ProductKeyVirtualAssetCategory   @default(MISCELLANEOUS) @map("product_key_virtual_asset_category")
   isSensitiveContent Boolean    @default(false) @map("is_sensitive_content")
-  // properties --> { propertyName: string | [number, number] } 
-  properties         Json? 
-  // reviews --> userId / rating / comment
-  reviews            Json?
-  ercType            ErcType     @map("erc_type")
-  like               String[]
-  priceLease         Int         @default(0)  
+  ercType            ErcType    @map("erc_type")
+  likes              Int        @default(0)
+  descriptions       String[]
+  propertiesKey      String[]
+  propertiesValue    String[]
+  imagesKey          String[]
+  imagesValue        String[]
+  levelsKey          String[]
+  levelsValueNum     Int[]
+  levelsValueDen     Int[]
+  reviews            Review[]   
   @@map("nfts")
+}
+
+model Review {
+  id                 Int        @id @default(autoincrement())
+  uuid               String     @unique @default(uuid())
+  createdAt          DateTime   @default(now()) @map("created_at")
+  updatedAt          DateTime   @updatedAt @map("updated_at")
+  nftTokenId         Int        @map("nft_token_id")
+  nft                NFT        @relation(fields: [nftTokenId], references: [tokenId], onUpdate: Cascade, onDelete: Cascade)
+  userId    Int      @map("user_id")
+  user      User     @relation(fields: [userId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  // rating / 10 -> rating out of 5
+  // example: rating: 45 -> 4.5     
+  rating             Int        @default(0)
+  comment            String     @default("")
 }
 
 model Collection {

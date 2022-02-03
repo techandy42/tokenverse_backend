@@ -13,8 +13,9 @@ export const selectionUser = {
   userName: true,
   verified: true,
   verificationDate: true,
-  verificationLink: true,
   role: true,
+  likedNfts: true,
+  cartNfts: true,
 }
 
 export const selectionNFT = {
@@ -24,23 +25,34 @@ export const selectionNFT = {
   fileUrl: true,
   multimediaFile: true,
   price: true,
-  isOnMarket: true,
+  isOnSale: true,
+  isOnLease: true,
+  isOnAuction: true,
   isMetadataFrozen: true,
+  isSensitiveContent: true,
   tokenId: true,
   itemId: true,
   startSaleDate: true,
   endSaleDate: true,
-  startLeaseDate: true,
-  endLeaseDate: true,
   saleType: true,
   collectibleCategory: true,
   productKeyRealLifeAssetCategory: true,
   productKeyVirtualAssetCategory: true,
-  isSensitiveContent: true,
-  properties: true,
-  reviews: true,
   ercType: true,
-  like: true,
+  likes: true,
+  descriptions: true,
+  propertiesKey: true,
+  propertiesValue: true,
+  imagesKey: true,
+  imagesValue: true,
+  levelsKey: true,
+  levelsValueNum: true,
+  levelsValueDen: true,
+}
+
+export const selectionReview = {
+  rating: true,
+  comment: true,
 }
 
 export const selectionCollection = {
