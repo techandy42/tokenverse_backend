@@ -10,6 +10,7 @@ import {
 const prisma = new PrismaClient()
 const router = express.Router()
 
+/* Creates a collection */
 router.post('/:address', async (req: Request, res: Response) => {
   const address = req.params.address
   try {
@@ -45,6 +46,7 @@ router.post('/:address', async (req: Request, res: Response) => {
   }
 })
 
+/* Fetches a collection */
 router.get('/:name', async (req: Request, res: Response) => {
   const name = req.params.name
   try {
@@ -78,6 +80,7 @@ router.get('/:name', async (req: Request, res: Response) => {
   }
 })
 
+/* Modifies the name of a collection */
 router.put('/change-name/:name', async (req: Request, res: Response) => {
   const name = req.params.name
   const { newName } = req.body
@@ -104,6 +107,7 @@ router.put('/change-name/:name', async (req: Request, res: Response) => {
   }
 })
 
+/* Modifies the name / image / description of a collection */
 router.put('/change-info/:name', async (req: Request, res: Response) => {
   const name = req.params.name
   const { newName, image, description } = req.body
@@ -132,6 +136,7 @@ router.put('/change-info/:name', async (req: Request, res: Response) => {
   }
 })
 
+/* Deletes a collection */
 router.delete('/:name', async (req: Request, res: Response) => {
   const name = req.params.name
   try {
@@ -162,6 +167,7 @@ router.delete('/:name', async (req: Request, res: Response) => {
   }
 })
 
+/* Fetches all the collections */
 router.get('/', async (req: Request, res: Response) => {
   try {
     const collections = await prisma.collection.findMany({

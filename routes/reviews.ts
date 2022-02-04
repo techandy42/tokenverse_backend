@@ -14,6 +14,7 @@ import {
 const prisma = new PrismaClient()
 const router = express.Router()
 
+/* Fetches a review */
 router.get('/:id', async (req: Request, res: Response) => {
   let id: string | number = req.params.id
   id = parseInt(id)
@@ -33,6 +34,7 @@ router.get('/:id', async (req: Request, res: Response) => {
   }
 })
 
+/* Creates a review */
 router.post(
   '/',
   reviewPostValidationRules,
@@ -62,6 +64,7 @@ router.post(
   },
 )
 
+/* Modifies a review */
 router.put('/:id', async (req: Request, res: Response) => {
   let id: string | number = req.params.id
   id = parseInt(id)
@@ -85,6 +88,7 @@ router.put('/:id', async (req: Request, res: Response) => {
   }
 })
 
+/* Deletes a review */
 router.delete('/:id', async (req: Request, res: Response) => {
   let id: string | number = req.params.id
   id = parseInt(id)

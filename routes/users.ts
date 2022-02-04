@@ -16,6 +16,7 @@ import {
 const prisma = new PrismaClient()
 const router = express.Router()
 
+/* Creates a user */
 router.post(
   '/',
   userPostValidationRules,
@@ -41,6 +42,7 @@ router.post(
   },
 )
 
+/* Fetches a user */
 router.get('/:address', async (req: Request, res: Response) => {
   const address = req.params.address
   try {
@@ -77,6 +79,7 @@ router.get('/:address', async (req: Request, res: Response) => {
   }
 })
 
+/* Fetches all the liked NFT of a user */
 router.get('/liked/:address', async (req: Request, res: Response) => {
   const address = req.params.address
   try {
@@ -88,7 +91,7 @@ router.get('/liked/:address', async (req: Request, res: Response) => {
     const likedNftTokenIds = user.likedNfts
     const listLikedNfts = []
     for (let i = 0; i < likedNftTokenIds.length; i++) {
-      const tokenId = likedNftTokenIds[0]
+      const tokenId = likedNftTokenIds[i]
       const likedNft = await prisma.nFT.findUnique({
         where: { tokenId },
       })
@@ -101,6 +104,7 @@ router.get('/liked/:address', async (req: Request, res: Response) => {
   }
 })
 
+/* Fetches all the cart NFT of a user */
 router.get('/cart/:address', async (req: Request, res: Response) => {
   const address = req.params.address
   try {
@@ -112,7 +116,7 @@ router.get('/cart/:address', async (req: Request, res: Response) => {
     const cartNftTokenIds = user.cartNfts
     const cartLikedNfts = []
     for (let i = 0; i < cartNftTokenIds.length; i++) {
-      const tokenId = cartNftTokenIds[0]
+      const tokenId = cartNftTokenIds[i]
       const cartNft = await prisma.nFT.findUnique({
         where: { tokenId },
       })
@@ -125,6 +129,7 @@ router.get('/cart/:address', async (req: Request, res: Response) => {
   }
 })
 
+/* Adds a liked NFT tokenId to a user */
 router.put('/liked/:address', async (req: Request, res: Response) => {
   const address = req.params.address
   const { tokenId } = req.body
@@ -149,6 +154,7 @@ router.put('/liked/:address', async (req: Request, res: Response) => {
   }
 })
 
+/* Adds a cart NFT tokenId to a user */
 router.put('/cart/:address', async (req: Request, res: Response) => {
   const address = req.params.address
   const { tokenId } = req.body
@@ -173,6 +179,7 @@ router.put('/cart/:address', async (req: Request, res: Response) => {
   }
 })
 
+/* Modifies a user */
 router.put('/:address', async (req: Request, res: Response) => {
   const address = req.params.address
   const {

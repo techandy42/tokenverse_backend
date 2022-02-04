@@ -14,10 +14,12 @@ app.use(express.json())
 // nFT --> tokenId
 // reviews --> id
 
+/* Main */
 app.get('/', (req, res) => {
   res.send('Tokenverse Backend')
 })
 
+/* Routes */
 app.use('/users', usersRoutes)
 app.use('/nfts', nftsRoutes)
 app.use('/collections', collectionsRoutes)
