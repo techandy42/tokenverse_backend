@@ -1,0 +1,225 @@
+*** This file details the tests for the collections route ***
+
+TESTING COMPLETE
+
+-----
+
+Route:
+    /collections/:address
+    /collections/0x90F79bf6EB2c4f870365E785982E1f101E93b906
+Type:
+    POST
+JSON:
+    None
+Result:
+(Test 1)
+{
+    "image": null,
+    "description": "",
+    "id": 1,
+    "uuid": "16267d85-e6a3-4ce8-bd00-7395473e2b18",
+    "createdAt": "2022-02-18T22:43:43.453Z",
+    "updatedAt": "2022-02-18T22:43:43.454Z",
+    "name": "collection-1",
+    "userId": 1
+}
+(Test 2)
+{
+    "image": null,
+    "description": "",
+    "id": 2,
+    "uuid": "17dc7a67-9067-4683-817c-ea35c25e116d",
+    "createdAt": "2022-02-18T22:43:56.649Z",
+    "updatedAt": "2022-02-18T22:43:56.650Z",
+    "name": "collection-2",
+    "userId": 1
+}
+
+-----
+
+Route:
+    /collections
+Type:
+    GET
+JSON:
+    None
+Result:
+[
+    {
+        "image": null,
+        "description": "",
+        "createdAt": "2022-02-18T22:43:43.453Z",
+        "name": "collection-1",
+        "user": {
+            "email": "techandy42@gmail.com",
+            "address": "0x90F79bf6EB2c4f870365E785982E1f101E93b906",
+            "companyName": "This is for testing",
+            "createdAt": "2022-02-18T22:29:59.994Z",
+            "description": "This is for testing",
+            "facebookLink": "https://google.com",
+            "image": {
+                "field1": "hello",
+                "field2": "world"
+            },
+            "instagramLink": "https://google.com",
+            "linkedInLink": "https://google.com",
+            "mainLink": "https://google.com",
+            "twitterLink": "https://google.com",
+            "userName": "This is for testing",
+            "verified": false,
+            "verificationDate": null,
+            "role": "USER",
+            "likedNfts": [],
+            "cartNfts": []
+        },
+        "nfts": []
+    },
+    {
+        "image": null,
+        "description": "",
+        "createdAt": "2022-02-18T22:43:56.649Z",
+        "name": "collection-2",
+        "user": {
+            "email": "techandy42@gmail.com",
+            "address": "0x90F79bf6EB2c4f870365E785982E1f101E93b906",
+            "companyName": "This is for testing",
+            "createdAt": "2022-02-18T22:29:59.994Z",
+            "description": "This is for testing",
+            "facebookLink": "https://google.com",
+            "image": {
+                "field1": "hello",
+                "field2": "world"
+            },
+            "instagramLink": "https://google.com",
+            "linkedInLink": "https://google.com",
+            "mainLink": "https://google.com",
+            "twitterLink": "https://google.com",
+            "userName": "This is for testing",
+            "verified": false,
+            "verificationDate": null,
+            "role": "USER",
+            "likedNfts": [],
+            "cartNfts": []
+        },
+        "nfts": []
+    }
+]
+
+-----
+
+Route:
+    /collections/:name
+    /collections/collection-1
+Type:
+    GET
+JSON:
+    None
+Result:
+{
+    "image": null,
+    "description": "",
+    "createdAt": "2022-02-18T22:43:43.453Z",
+    "name": "collection-1",
+    "user": {
+        "email": "techandy42@gmail.com",
+        "address": "0x90F79bf6EB2c4f870365E785982E1f101E93b906",
+        "companyName": "This is for testing",
+        "createdAt": "2022-02-18T22:29:59.994Z",
+        "description": "This is for testing",
+        "facebookLink": "https://google.com",
+        "image": {
+            "field1": "hello",
+            "field2": "world"
+        },
+        "instagramLink": "https://google.com",
+        "linkedInLink": "https://google.com",
+        "mainLink": "https://google.com",
+        "twitterLink": "https://google.com",
+        "userName": "This is for testing",
+        "verified": false,
+        "verificationDate": null,
+        "role": "USER",
+        "likedNfts": [],
+        "cartNfts": []
+    },
+    "nfts": []
+}
+
+-----
+
+Route:
+    /collections/change-name/:name
+    /collections/change-name/collection-1
+Type:
+    PUT
+JSON:
+{
+    "newName": "my collection"
+}
+Result:
+{
+    "image": null,
+    "description": "",
+    "id": 1,
+    "uuid": "16267d85-e6a3-4ce8-bd00-7395473e2b18",
+    "createdAt": "2022-02-18T22:43:43.453Z",
+    "updatedAt": "2022-02-18T22:50:31.896Z",
+    "name": "my collection",
+    "userId": 1
+}
+
+-----
+
+Route:
+    /collections/change-info/:name
+    /collections/change-info/my collection
+Type:
+    PUT
+JSON:
+{
+    "newName": "my collection 2",
+    "image": { "field1": "what's", "field2": "up" },
+    "description": "this is for testing"
+}
+Result:
+{
+    "image": {
+        "field1": "what's",
+        "field2": "up"
+    },
+    "description": "this is for testing",
+    "id": 1,
+    "uuid": "16267d85-e6a3-4ce8-bd00-7395473e2b18",
+    "createdAt": "2022-02-18T22:43:43.453Z",
+    "updatedAt": "2022-02-18T22:53:15.950Z",
+    "name": "my collection 2",
+    "userId": 1
+}
+
+-----
+
+Route:
+    /collections/:name
+    /collections/my collection 2
+Type:
+    DELETE
+JSON:
+    None
+Result:
+{
+    "newName": "my collection 2",
+    "image": { "field1": "what's", "field2": "up" },
+    "description": "this is for testing"
+}
+
+-----
+
+SQL Query:
+
+SELECT * FROM collections;
+
+ id |                 uuid                 |       created_at        |       updated_at       |     name     | user_id | description | image
+----+--------------------------------------+-------------------------+------------------------+--------------+---------+-------------+-------
+  2 | 17dc7a67-9067-4683-817c-ea35c25e116d | 2022-02-18 22:43:56.649 | 2022-02-18 22:43:56.65 | collection-2 |       1 |             |
+
+-----

@@ -154,7 +154,7 @@ router.put('/on-market/:tokenId', async (req: Request, res: Response) => {
     // metadata
     saleType,
     collectibleCategory,
-    productKeyRealLifeAssetCategory,
+    productKeyAccessTokenCategory,
     productKeyVirtualAssetCategory,
     isSensitiveContent,
     descriptions,
@@ -167,6 +167,16 @@ router.put('/on-market/:tokenId', async (req: Request, res: Response) => {
     levelsValueDen,
   } = req.body
   try {
+    if (
+      propertiesKey.length !== propertiesValue.length ||
+      imagesKey.length !== imagesValue.length ||
+      levelsKey.length !== levelsValueNum.length ||
+      levelsKey.length !== levelsValueDen.length
+    ) {
+      throw {
+        error: 'The length of the keys and values of inputs must be the same',
+      }
+    }
     let nft = await prisma.nFT.findUnique({
       where: { tokenId },
     })
@@ -183,7 +193,7 @@ router.put('/on-market/:tokenId', async (req: Request, res: Response) => {
       const metadata = {
         saleType,
         collectibleCategory,
-        productKeyRealLifeAssetCategory,
+        productKeyAccessTokenCategory,
         productKeyVirtualAssetCategory,
         isSensitiveContent,
         descriptions,
@@ -244,7 +254,7 @@ router.put(
       collection,
       saleType,
       collectibleCategory,
-      productKeyRealLifeAssetCategory,
+      productKeyAccessTokenCategory,
       productKeyVirtualAssetCategory,
       isSensitiveContent,
       descriptions,
@@ -304,7 +314,7 @@ router.put(
         collection,
         saleType,
         collectibleCategory,
-        productKeyRealLifeAssetCategory,
+        productKeyAccessTokenCategory,
         productKeyVirtualAssetCategory,
         isSensitiveContent,
         descriptions,

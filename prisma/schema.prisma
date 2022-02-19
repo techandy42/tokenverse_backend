@@ -68,7 +68,7 @@ model NFT {
   endSaleDate        DateTime   @default(now()) @map("end_sale_date")
   saleType           SaleType   @default(COLLECTIBLE) @map("sale_type")
   collectibleCategory CollectibleCategory   @default(MISCELLANEOUS) @map("collectible_category")
-  productKeyRealLifeAssetCategory ProductKeyRealLifeAssetCategory   @default(MISCELLANEOUS) @map("product_key_real_life_asset_category")
+  productKeyAccessTokenCategory ProductKeyAccessTokenCategory   @default(MISCELLANEOUS) @map("product_key_access_token_category")
   productKeyVirtualAssetCategory ProductKeyVirtualAssetCategory   @default(MISCELLANEOUS) @map("product_key_virtual_asset_category")
   isSensitiveContent Boolean    @default(false) @map("is_sensitive_content")
   ercType            ErcType    @map("erc_type")
@@ -98,6 +98,8 @@ model Review {
   // example: rating: 45 -> 4.5     
   rating             Int        @default(0)
   comment            String     @default("")
+
+  @@map("reviews")
 }
 
 model Collection {
@@ -156,20 +158,9 @@ enum CollectibleCategory {
   TRADING_CARD
 }
 
-enum ProductKeyRealLifeAssetCategory {
+enum ProductKeyAccessTokenCategory {
   MISCELLANEOUS
-  CLOTHING_WEARABLE
-  BEAUTY_ACCESSORY
-  TOOL_EQUIPMENT
-  MATERIAL_MACHINE_PART
-  ELECTRONIC_APPLIANCE
-  GROCERY_FOOD
-  WEAPON
-  FURNITURE
-  REAL_ESTATE
-  TOY_GAME
-  HOME_SUPPLY
-  MEDICAL_MAGIC_ITEM
+  // Soon to be added
 }
 
 enum ProductKeyVirtualAssetCategory {

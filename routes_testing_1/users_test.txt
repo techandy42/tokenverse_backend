@@ -1,0 +1,318 @@
+*** This file details the tests for the users route ***
+
+TESTING COMPLETE
+
+-----
+
+Route:
+    /users
+Type:
+    POST
+JSON:
+{
+    "address": "0x90F79bf6EB2c4f870365E785982E1f101E93b906"
+}
+Result:
+{
+    "id": 1,
+    "email": "",
+    "address": "0x90F79bf6EB2c4f870365E785982E1f101E93b906",
+    "companyName": "",
+    "createdAt": "2022-02-18T22:29:59.994Z",
+    "description": "",
+    "facebookLink": "",
+    "image": null,
+    "instagramLink": "",
+    "linkedInLink": "",
+    "mainLink": "",
+    "twitterLink": "",
+    "updatedAt": "2022-02-18T22:29:59.996Z",
+    "userName": "0x90F79bf6EB2c4f870365E785982E1f101E93b906",
+    "uuid": "cc22d35e-9149-4e75-9348-549769ca6767",
+    "verified": false,
+    "verificationDate": null,
+    "role": "USER",
+    "likedNfts": [],
+    "cartNfts": []
+}
+
+-----
+
+Route:
+    /users/:address
+    /users/0x90F79bf6EB2c4f870365E785982E1f101E93b906
+Type:
+    GET
+JSON:
+    None
+Result:
+{
+    "email": "",
+    "address": "0x90F79bf6EB2c4f870365E785982E1f101E93b906",
+    "companyName": "",
+    "createdAt": "2022-02-18T22:29:59.994Z",
+    "description": "",
+    "facebookLink": "",
+    "image": null,
+    "instagramLink": "",
+    "linkedInLink": "",
+    "mainLink": "",
+    "twitterLink": "",
+    "userName": "0x90F79bf6EB2c4f870365E785982E1f101E93b906",
+    "verified": false,
+    "verificationDate": null,
+    "role": "USER",
+    "likedNfts": [],
+    "cartNfts": [],
+    "collections": [],
+    "nfts": [],
+    "nftscreated": [],
+    "reviews": []
+}
+
+-----
+
+Route:
+    /users/liked/:address
+    /users/liked/0x90F79bf6EB2c4f870365E785982E1f101E93b906
+Type:
+    PUT
+JSON:
+{
+    "tokenId": 1
+}
+Result:
+{
+    "id": 1,
+    "email": "techandy42@gmail.com",
+    "address": "0x90F79bf6EB2c4f870365E785982E1f101E93b906",
+    "companyName": "This is for testing",
+    "createdAt": "2022-02-18T22:29:59.994Z",
+    "description": "This is for testing",
+    "facebookLink": "https://google.com",
+    "image": {
+        "field1": "hello",
+        "field2": "world"
+    },
+    "instagramLink": "https://google.com",
+    "linkedInLink": "https://google.com",
+    "mainLink": "https://google.com",
+    "twitterLink": "https://google.com",
+    "updatedAt": "2022-02-18T23:10:58.353Z",
+    "userName": "This is for testing",
+    "uuid": "cc22d35e-9149-4e75-9348-549769ca6767",
+    "verified": false,
+    "verificationDate": null,
+    "role": "USER",
+    "likedNfts": [
+        1
+    ],
+    "cartNfts": []
+}
+
+-----
+
+Route:
+    /users/cart/:address
+    /users/cart/0x90F79bf6EB2c4f870365E785982E1f101E93b906
+Type:
+    PUT
+JSON:
+{
+    "tokenId": 2
+}
+Result:
+{
+    "id": 1,
+    "email": "techandy42@gmail.com",
+    "address": "0x90F79bf6EB2c4f870365E785982E1f101E93b906",
+    "companyName": "This is for testing",
+    "createdAt": "2022-02-18T22:29:59.994Z",
+    "description": "This is for testing",
+    "facebookLink": "https://google.com",
+    "image": {
+        "field1": "hello",
+        "field2": "world"
+    },
+    "instagramLink": "https://google.com",
+    "linkedInLink": "https://google.com",
+    "mainLink": "https://google.com",
+    "twitterLink": "https://google.com",
+    "updatedAt": "2022-02-18T23:10:58.353Z",
+    "userName": "This is for testing",
+    "uuid": "cc22d35e-9149-4e75-9348-549769ca6767",
+    "verified": false,
+    "verificationDate": null,
+    "role": "USER",
+    "likedNfts": [
+        1
+    ],
+    "cartNfts": [
+        2
+    ]
+}
+
+-----
+
+Route:
+    /users/liked/:address
+    /users/liked/0x90F79bf6EB2c4f870365E785982E1f101E93b906
+Type:
+    GET
+JSON:
+    None
+Result:
+[
+    {
+        "id": 1,
+        "uuid": "e660b966-a3f8-4545-9835-f8b488564f7b",
+        "createdAt": "2022-02-18T23:03:50.813Z",
+        "updatedAt": "2022-02-18T23:03:50.813Z",
+        "name": "this is for testing",
+        "blockchainType": "POLYGON",
+        "fileUrl": "https://google.com",
+        "multimediaFile": {
+            "field1": "hello",
+            "field2": "world"
+        },
+        "price": 0,
+        "isOnSale": false,
+        "isOnLease": false,
+        "isOnAuction": false,
+        "isMetadataFrozen": false,
+        "tokenId": 1,
+        "itemId": 1,
+        "userId": 1,
+        "collectionId": 2,
+        "creatorId": 1,
+        "startSaleDate": "2022-02-18T23:03:50.812Z",
+        "endSaleDate": "2022-02-18T23:03:50.812Z",
+        "saleType": "COLLECTIBLE",
+        "collectibleCategory": "MISCELLANEOUS",
+        "productKeyAccessTokenCategory": "MISCELLANEOUS",
+        "productKeyVirtualAssetCategory": "MISCELLANEOUS",
+        "isSensitiveContent": false,
+        "ercType": "ERC_721",
+        "likes": 0,
+        "descriptions": [],
+        "propertiesKey": [],
+        "propertiesValue": [],
+        "imagesKey": [],
+        "imagesValue": [],
+        "levelsKey": [],
+        "levelsValueNum": [],
+        "levelsValueDen": []
+    }
+]
+
+-----
+
+Route:
+    /users/cart/:address
+    /users/cart/0x90F79bf6EB2c4f870365E785982E1f101E93b906
+Type:
+    GET
+JSON:
+    None
+Result:
+[
+    {
+        "id": 2,
+        "uuid": "f9b214e7-0d67-4fec-8964-761fac70101e",
+        "createdAt": "2022-02-18T23:07:04.921Z",
+        "updatedAt": "2022-02-18T23:07:04.922Z",
+        "name": "one",
+        "blockchainType": "POLYGON",
+        "fileUrl": "https://google.com",
+        "multimediaFile": {
+            "field1": "hello",
+            "field2": "world"
+        },
+        "price": 0,
+        "isOnSale": false,
+        "isOnLease": false,
+        "isOnAuction": false,
+        "isMetadataFrozen": false,
+        "tokenId": 2,
+        "itemId": 2,
+        "userId": 1,
+        "collectionId": 2,
+        "creatorId": 1,
+        "startSaleDate": "2022-02-18T23:07:04.921Z",
+        "endSaleDate": "2022-02-18T23:07:04.921Z",
+        "saleType": "COLLECTIBLE",
+        "collectibleCategory": "MISCELLANEOUS",
+        "productKeyAccessTokenCategory": "MISCELLANEOUS",
+        "productKeyVirtualAssetCategory": "MISCELLANEOUS",
+        "isSensitiveContent": false,
+        "ercType": "ERC_721",
+        "likes": 0,
+        "descriptions": [],
+        "propertiesKey": [],
+        "propertiesValue": [],
+        "imagesKey": [],
+        "imagesValue": [],
+        "levelsKey": [],
+        "levelsValueNum": [],
+        "levelsValueDen": []
+    }
+]
+
+-----
+
+Route:
+    /users/:address
+    /users/0x90F79bf6EB2c4f870365E785982E1f101E93b906
+Type:
+    PUT
+JSON:
+{
+    "image": { "field1": "hello", "field2": "world" },
+    "userName": "This is for testing",
+    "companyName": "This is for testing",
+    "description": "This is for testing",
+    "email": "techandy42@gmail.com",
+    "mainLink": "https://google.com",
+    "facebookLink": "https://google.com",
+    "instagramLink": "https://google.com",
+    "twitterLink": "https://google.com",
+    "linkedInLink": "https://google.com"
+}
+Result:
+{
+    "id": 1,
+    "email": "techandy42@gmail.com",
+    "address": "0x90F79bf6EB2c4f870365E785982E1f101E93b906",
+    "companyName": "This is for testing",
+    "createdAt": "2022-02-18T22:29:59.994Z",
+    "description": "This is for testing",
+    "facebookLink": "https://google.com",
+    "image": {
+        "field1": "hello",
+        "field2": "world"
+    },
+    "instagramLink": "https://google.com",
+    "linkedInLink": "https://google.com",
+    "mainLink": "https://google.com",
+    "twitterLink": "https://google.com",
+    "updatedAt": "2022-02-18T22:39:55.551Z",
+    "userName": "This is for testing",
+    "uuid": "cc22d35e-9149-4e75-9348-549769ca6767",
+    "verified": false,
+    "verificationDate": null,
+    "role": "USER",
+    "likedNfts": [],
+    "cartNfts": []
+}
+
+-----
+
+SQL Query:
+
+SELECT * FROM users;
+
+ id |        email         |                  address                   |       created_at        |     description     |                 image                  |       updated_at        |                 uuid                 | role |    company_name     |   facebook_link    |   instagram_link   |   linked_in_link   |     main_link      |    twitter_link    |      user_name      | verification_date | verified | cartNfts | likedNfts
+----+----------------------+--------------------------------------------+-------------------------+---------------------+----------------------------------------+-------------------------+--------------------------------------+------+---------------------+--------------------+--------------------+--------------------+--------------------+--------------------+---------------------+-------------------+----------+----------+-----------
+  1 | techandy42@gmail.com | 0x90F79bf6EB2c4f870365E785982E1f101E93b906 | 2022-02-18 22:29:59.994 | This is for testing | {"field1": "hello", "field2": "world"} | 2022-02-18 23:10:58.353 | cc22d35e-9149-4e75-9348-549769ca6767 | USER | This is for testing | https://google.com | https://google.com | https://google.com | https://google.com | https://google.com | This is for testing |                   | f        | {2}      | {1}
+
+-----

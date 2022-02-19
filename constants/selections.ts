@@ -36,7 +36,7 @@ export const selectionNFT = {
   endSaleDate: true,
   saleType: true,
   collectibleCategory: true,
-  productKeyRealLifeAssetCategory: true,
+  productKeyAccessTokenCategory: true,
   productKeyVirtualAssetCategory: true,
   ercType: true,
   likes: true,

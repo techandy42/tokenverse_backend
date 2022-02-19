@@ -1,0 +1,113 @@
+*** This file details the tests for the reviews route ***
+
+TESTING COMPLETE
+
+-----
+
+Route:
+    /reviews
+Type:
+    POST
+JSON:
+(Test 1)
+{
+    "address": "0x90F79bf6EB2c4f870365E785982E1f101E93b906",
+    "tokenId": 1,
+    "rating": 100,
+    "comment": "this is for testing"
+}
+(Test 2)
+{
+    "address": "0x90F79bf6EB2c4f870365E785982E1f101E93b906",
+    "tokenId": 1,
+    "rating": 85,
+    "comment": "this is for testing 2"
+}
+Result:
+(Test 1)
+{
+    "id": 1,
+    "uuid": "43729fdb-9778-49f7-ac68-19ae291f03ca",
+    "createdAt": "2022-02-18T23:30:20.474Z",
+    "updatedAt": "2022-02-18T23:30:20.475Z",
+    "nftTokenId": 1,
+    "userId": 1,
+    "rating": 100,
+    "comment": "this is for testing"
+}
+(Test 2)
+{
+    "id": 2,
+    "uuid": "e21c5b03-aa88-4bf7-b44f-250a7ee9f859",
+    "createdAt": "2022-02-18T23:35:04.517Z",
+    "updatedAt": "2022-02-18T23:35:04.518Z",
+    "nftTokenId": 1,
+    "userId": 1,
+    "rating": 85,
+    "comment": "this is for testing 2"
+}
+
+-----
+
+Route:
+    /reviews/:id
+    /reviews/1
+Type:
+    GET
+JSON:
+    None
+Result:
+{
+    "rating": 100,
+    "comment": "this is for testing"
+}
+
+-----
+
+Route:
+    /reviews/:id
+    /reviews/1
+Type:
+    PUT
+JSON:
+{
+    "rating": 95,
+    "comment": "this is for testing - modified"
+}
+Result:
+{
+    "id": 1,
+    "uuid": "43729fdb-9778-49f7-ac68-19ae291f03ca",
+    "createdAt": "2022-02-18T23:30:20.474Z",
+    "updatedAt": "2022-02-18T23:36:33.060Z",
+    "nftTokenId": 1,
+    "userId": 1,
+    "rating": 95,
+    "comment": "this is for testing - modified"
+}
+
+-----
+
+Route:
+    /reviews/:id
+    /reviews/1
+Type:
+    DELETE
+JSON:
+    None
+Result:
+{
+    "message": "Deleted the review with id: 1"
+}
+
+-----
+
+SQL Query:
+
+SELECT * FROM reviews;
+
+ id |                 uuid                 |       created_at        |       updated_at        | nft_token_id | user_id | rating |        comment
+----+--------------------------------------+-------------------------+-------------------------+--------------+---------+--------+-----------------------
+  2 | e21c5b03-aa88-4bf7-b44f-250a7ee9f859 | 2022-02-18 23:35:04.517 | 2022-02-18 23:35:04.518 |            1 |       1 |     85 | this is for testing 2
+
+-----

@@ -10,7 +10,7 @@ const nftTransferInitializer = (
     collection: nft.collection,
     saleType: nft.saleType,
     collectibleCategory: nft.collectibleCategory,
-    productKeyRealLifeAssetCategory: nft.productKeyRealLifeAssetCategory,
+    productKeyAccessTokenCategory: nft.productKeyAccessTokenCategory,
     productKeyVirtualAssetCategory: nft.productKeyVirtualAssetCategory,
     isSensitiveContent: nft.isSensitiveContent,
     descriptions: nft.descriptions,

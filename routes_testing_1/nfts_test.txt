@@ -1,0 +1,754 @@
+*** This file details the tests for the nfts route ***
+
+TESTING COMPLETE
+
+-----
+
+Route:
+    /nfts
+Type:
+    POST
+JSON:
+{
+    "address": "0x90F79bf6EB2c4f870365E785982E1f101E93b906",
+    "name": "this is for testing",
+    "blockchainType": "POLYGON",
+    "fileUrl": "https://google.com",
+    "multimediaFile": { "field1": "hello", "field2": "world" },
+    "tokenId": 1,
+    "itemId": 1,
+    "collection": "collection-2",
+    "ercType": "ERC_721"
+}
+Result:
+{
+    "id": 1,
+    "uuid": "e660b966-a3f8-4545-9835-f8b488564f7b",
+    "createdAt": "2022-02-18T23:03:50.813Z",
+    "updatedAt": "2022-02-18T23:03:50.813Z",
+    "name": "this is for testing",
+    "blockchainType": "POLYGON",
+    "fileUrl": "https://google.com",
+    "multimediaFile": {
+        "field1": "hello",
+        "field2": "world"
+    },
+    "price": 0,
+    "isOnSale": false,
+    "isOnLease": false,
+    "isOnAuction": false,
+    "isMetadataFrozen": false,
+    "tokenId": 1,
+    "itemId": 1,
+    "userId": 1,
+    "collectionId": 2,
+    "creatorId": 1,
+    "startSaleDate": "2022-02-18T23:03:50.812Z",
+    "endSaleDate": "2022-02-18T23:03:50.812Z",
+    "saleType": "COLLECTIBLE",
+    "collectibleCategory": "MISCELLANEOUS",
+    "productKeyAccessTokenCategory": "MISCELLANEOUS",
+    "productKeyVirtualAssetCategory": "MISCELLANEOUS",
+    "isSensitiveContent": false,
+    "ercType": "ERC_721",
+    "likes": 0,
+    "descriptions": [],
+    "propertiesKey": [],
+    "propertiesValue": [],
+    "imagesKey": [],
+    "imagesValue": [],
+    "levelsKey": [],
+    "levelsValueNum": [],
+    "levelsValueDen": []
+}
+
+-----
+
+Route:
+    /nfts/multiple
+Type:
+    POST
+JSON:
+{
+    "address": "0x90F79bf6EB2c4f870365E785982E1f101E93b906",
+    "names": ["one", "two", "three"],
+    "blockchainType": "POLYGON",
+    "fileUrls": ["https://google.com", "https://google.com", "https://google.com"],
+    "multimediaFiles": [{ "field1": "hello", "field2": "world" }, { "field1": "hello", "field2": "world" }, { "field1": "hello", "field2": "world" }],
+    "tokenIds": [2, 3, 4],
+    "itemIds": [2, 3, 4],
+    "collection": "collection-2",
+    "ercType": "ERC_721"
+}
+Result:
+[
+    {
+        "id": 2,
+        "uuid": "f9b214e7-0d67-4fec-8964-761fac70101e",
+        "createdAt": "2022-02-18T23:07:04.921Z",
+        "updatedAt": "2022-02-18T23:07:04.922Z",
+        "name": "one",
+        "blockchainType": "POLYGON",
+        "fileUrl": "https://google.com",
+        "multimediaFile": {
+            "field1": "hello",
+            "field2": "world"
+        },
+        "price": 0,
+        "isOnSale": false,
+        "isOnLease": false,
+        "isOnAuction": false,
+        "isMetadataFrozen": false,
+        "tokenId": 2,
+        "itemId": 2,
+        "userId": 1,
+        "collectionId": 2,
+        "creatorId": 1,
+        "startSaleDate": "2022-02-18T23:07:04.921Z",
+        "endSaleDate": "2022-02-18T23:07:04.921Z",
+        "saleType": "COLLECTIBLE",
+        "collectibleCategory": "MISCELLANEOUS",
+        "productKeyAccessTokenCategory": "MISCELLANEOUS",
+        "productKeyVirtualAssetCategory": "MISCELLANEOUS",
+        "isSensitiveContent": false,
+        "ercType": "ERC_721",
+        "likes": 0,
+        "descriptions": [],
+        "propertiesKey": [],
+        "propertiesValue": [],
+        "imagesKey": [],
+        "imagesValue": [],
+        "levelsKey": [],
+        "levelsValueNum": [],
+        "levelsValueDen": []
+    },
+    {
+        "id": 3,
+        "uuid": "702bbe71-ec7f-463a-9f64-86e3eb8a9dd7",
+        "createdAt": "2022-02-18T23:07:04.930Z",
+        "updatedAt": "2022-02-18T23:07:04.931Z",
+        "name": "two",
+        "blockchainType": "POLYGON",
+        "fileUrl": "https://google.com",
+        "multimediaFile": {
+            "field1": "hello",
+            "field2": "world"
+        },
+        "price": 0,
+        "isOnSale": false,
+        "isOnLease": false,
+        "isOnAuction": false,
+        "isMetadataFrozen": false,
+        "tokenId": 3,
+        "itemId": 3,
+        "userId": 1,
+        "collectionId": 2,
+        "creatorId": 1,
+        "startSaleDate": "2022-02-18T23:07:04.930Z",
+        "endSaleDate": "2022-02-18T23:07:04.930Z",
+        "saleType": "COLLECTIBLE",
+        "collectibleCategory": "MISCELLANEOUS",
+        "productKeyAccessTokenCategory": "MISCELLANEOUS",
+        "productKeyVirtualAssetCategory": "MISCELLANEOUS",
+        "isSensitiveContent": false,
+        "ercType": "ERC_721",
+        "likes": 0,
+        "descriptions": [],
+        "propertiesKey": [],
+        "propertiesValue": [],
+        "imagesKey": [],
+        "imagesValue": [],
+        "levelsKey": [],
+        "levelsValueNum": [],
+        "levelsValueDen": []
+    },
+    {
+        "id": 4,
+        "uuid": "74d0ec2d-3994-4a9a-abc5-b483670b408e",
+        "createdAt": "2022-02-18T23:07:04.938Z",
+        "updatedAt": "2022-02-18T23:07:04.939Z",
+        "name": "three",
+        "blockchainType": "POLYGON",
+        "fileUrl": "https://google.com",
+        "multimediaFile": {
+            "field1": "hello",
+            "field2": "world"
+        },
+        "price": 0,
+        "isOnSale": false,
+        "isOnLease": false,
+        "isOnAuction": false,
+        "isMetadataFrozen": false,
+        "tokenId": 4,
+        "itemId": 4,
+        "userId": 1,
+        "collectionId": 2,
+        "creatorId": 1,
+        "startSaleDate": "2022-02-18T23:07:04.938Z",
+        "endSaleDate": "2022-02-18T23:07:04.938Z",
+        "saleType": "COLLECTIBLE",
+        "collectibleCategory": "MISCELLANEOUS",
+        "productKeyAccessTokenCategory": "MISCELLANEOUS",
+        "productKeyVirtualAssetCategory": "MISCELLANEOUS",
+        "isSensitiveContent": false,
+        "ercType": "ERC_721",
+        "likes": 0,
+        "descriptions": [],
+        "propertiesKey": [],
+        "propertiesValue": [],
+        "imagesKey": [],
+        "imagesValue": [],
+        "levelsKey": [],
+        "levelsValueNum": [],
+        "levelsValueDen": []
+    }
+]
+
+-----
+
+Route:
+    /nfts/on-market/:tokenId
+    /nfts/on-market/1
+Type:
+    PUT
+JSON:
+{
+    "price": 1000,
+    "isOnSale": true,
+    "isOnLease": false,
+    "isOnAuction": false,
+    "startSaleDate": "2022-02-19T00:03:28.318Z",
+    "endSaleDate": "2022-02-19T00:03:28.318Z",
+    "saleType": "COLLECTIBLE",
+    "collectibleCategory": "EXCLUSIVE",
+    "productKeyAccessTokenCategory": "MISCELLANEOUS",
+    "productKeyVirtualAssetCategory": "MISCELLANEOUS",
+    "isSensitiveContent": false,
+    "descriptions": ["a", "b", "c"],
+    "propertiesKey": ["a", "b", "c"],
+    "propertiesValue": ["a", "b", "c"],
+    "imagesKey": ["a", "b", "c"],
+    "imagesValue": ["a", "b", "c"],
+    "levelsKey": ["a", "b", "c"],
+    "levelsValueNum": [1, 2, 3],
+    "levelsValueDen": [1, 2, 3]
+}
+Result:
+{
+    "id": 1,
+    "uuid": "e660b966-a3f8-4545-9835-f8b488564f7b",
+    "createdAt": "2022-02-18T23:03:50.813Z",
+    "updatedAt": "2022-02-19T00:04:06.847Z",
+    "name": "this is for testing",
+    "blockchainType": "POLYGON",
+    "fileUrl": "https://google.com",
+    "multimediaFile": {
+        "field1": "hello",
+        "field2": "world"
+    },
+    "price": 1000,
+    "isOnSale": true,
+    "isOnLease": false,
+    "isOnAuction": false,
+    "isMetadataFrozen": false,
+    "tokenId": 1,
+    "itemId": 1,
+    "userId": 1,
+    "collectionId": 2,
+    "creatorId": 1,
+    "startSaleDate": "2022-02-19T00:03:28.318Z",
+    "endSaleDate": "2022-02-19T00:03:28.318Z",
+    "saleType": "COLLECTIBLE",
+    "collectibleCategory": "MISCELLANEOUS",
+    "productKeyAccessTokenCategory": "MISCELLANEOUS",
+    "productKeyVirtualAssetCategory": "MISCELLANEOUS",
+    "isSensitiveContent": false,
+    "ercType": "ERC_721",
+    "likes": 0,
+    "descriptions": [],
+    "propertiesKey": [],
+    "propertiesValue": [],
+    "imagesKey": [],
+    "imagesValue": [],
+    "levelsKey": [],
+    "levelsValueNum": [],
+    "levelsValueDen": []
+}
+
+-----
+
+Route:
+    /nfts/off-market/:tokenId
+    /nfts/off-market/1
+Type:
+    PUT
+JSON:
+{
+    "price": 1000,
+    "isOnSale": true,
+    "isOnLease": false,
+    "isOnAuction": false,
+    "startSaleDate": "2022-02-19T00:03:28.318Z",
+    "endSaleDate": "2022-02-19T00:03:28.318Z",
+    "saleType": "COLLECTIBLE",
+    "collectibleCategory": "EXCLUSIVE",
+    "productKeyAccessTokenCategory": "MISCELLANEOUS",
+    "productKeyVirtualAssetCategory": "MISCELLANEOUS",
+    "isSensitiveContent": false,
+    "descriptions": ["a", "b", "c"],
+    "propertiesKey": ["a", "b", "c"],
+    "propertiesValue": ["a", "b", "c"],
+    "imagesKey": ["a", "b", "c"],
+    "imagesValue": ["a", "b", "c"],
+    "levelsKey": ["a", "b", "c"],
+    "levelsValueNum": [1, 2, 3],
+    "levelsValueDen": [1, 2, 3]
+}
+Result:
+{
+    "id": 1,
+    "uuid": "e660b966-a3f8-4545-9835-f8b488564f7b",
+    "createdAt": "2022-02-18T23:03:50.813Z",
+    "updatedAt": "2022-02-19T00:07:12.898Z",
+    "name": "this is for testing",
+    "blockchainType": "POLYGON",
+    "fileUrl": "https://google.com",
+    "multimediaFile": {
+        "field1": "hello",
+        "field2": "world"
+    },
+    "price": 0,
+    "isOnSale": false,
+    "isOnLease": false,
+    "isOnAuction": false,
+    "isMetadataFrozen": false,
+    "tokenId": 1,
+    "itemId": 1,
+    "userId": 1,
+    "collectionId": 2,
+    "creatorId": 1,
+    "startSaleDate": "2022-02-18T23:58:11.836Z",
+    "endSaleDate": "2022-02-18T23:58:11.836Z",
+    "saleType": "COLLECTIBLE",
+    "collectibleCategory": "MISCELLANEOUS",
+    "productKeyAccessTokenCategory": "MISCELLANEOUS",
+    "productKeyVirtualAssetCategory": "MISCELLANEOUS",
+    "isSensitiveContent": false,
+    "ercType": "ERC_721",
+    "likes": 0,
+    "descriptions": [],
+    "propertiesKey": [],
+    "propertiesValue": [],
+    "imagesKey": [],
+    "imagesValue": [],
+    "levelsKey": [],
+    "levelsValueNum": [],
+    "levelsValueDen": []
+}
+
+-----
+
+Route:
+    /nfts/edit/:tokenId
+    /nfts/edit/1
+Type:
+    PUT
+JSON:
+{
+    "name": "this is for testing",
+    "fileUrl": "https://google.com",
+    "multimediaFile": { "field1": "hello", "field2": "world" },
+    "isMetadataFrozen": false,
+    "collection": "collection-2",
+    "saleType": "COLLECTIBLE",
+    "collectibleCategory": "EXCLUSIVE",
+    "productKeyAccessTokenCategory": "MISCELLANEOUS",
+    "productKeyVirtualAssetCategory": "MISCELLANEOUS",
+    "isSensitiveContent": false,
+    "descriptions": ["a", "b", "c"],
+    "propertiesKey": ["a", "b", "c"],
+    "propertiesValue": ["a", "b", "c"],
+    "imagesKey": ["a", "b", "c"],
+    "imagesValue": ["a", "b", "c"],
+    "levelsKey": ["a", "b", "c"],
+    "levelsValueNum": [1, 2, 3],
+    "levelsValueDen": [1, 2, 3]
+}
+Result:
+{
+    "id": 5,
+    "uuid": "e6b88ff9-82bf-41af-b683-122bdbc40b11",
+    "createdAt": "2022-02-19T00:11:24.430Z",
+    "updatedAt": "2022-02-19T00:11:24.431Z",
+    "name": "this is for testing",
+    "blockchainType": "POLYGON",
+    "fileUrl": "https://google.com",
+    "multimediaFile": {
+        "field1": "hello",
+        "field2": "world"
+    },
+    "price": 0,
+    "isOnSale": false,
+    "isOnLease": false,
+    "isOnAuction": false,
+    "isMetadataFrozen": false,
+    "tokenId": 1,
+    "itemId": 1,
+    "userId": 1,
+    "collectionId": 2,
+    "creatorId": 1,
+    "startSaleDate": "2022-02-19T00:11:24.430Z",
+    "endSaleDate": "2022-02-19T00:11:24.430Z",
+    "saleType": "COLLECTIBLE",
+    "collectibleCategory": "EXCLUSIVE",
+    "productKeyAccessTokenCategory": "MISCELLANEOUS",
+    "productKeyVirtualAssetCategory": "MISCELLANEOUS",
+    "isSensitiveContent": false,
+    "ercType": "ERC_721",
+    "likes": 0,
+    "descriptions": [
+        "a",
+        "b",
+        "c"
+    ],
+    "propertiesKey": [
+        "a",
+        "b",
+        "c"
+    ],
+    "propertiesValue": [
+        "a",
+        "b",
+        "c"
+    ],
+    "imagesKey": [
+        "a",
+        "b",
+        "c"
+    ],
+    "imagesValue": [
+        "a",
+        "b",
+        "c"
+    ],
+    "levelsKey": [
+        "a",
+        "b",
+        "c"
+    ],
+    "levelsValueNum": [
+        1,
+        2,
+        3
+    ],
+    "levelsValueDen": [
+        1,
+        2,
+        3
+    ]
+}
+
+-----
+
+Route:
+    /nfts/transfer/:tokenId
+    /nfts/transfer/1
+Type:
+    PUT
+JSON:
+{
+    "address": "0x90F79bf6EB2c4f870365E785982E1f101E93b906"
+}
+Result:
+{
+    "id": 6,
+    "uuid": "493907cd-8138-4d4c-8f7d-762f74f4b119",
+    "createdAt": "2022-02-19T00:14:46.623Z",
+    "updatedAt": "2022-02-19T00:14:46.624Z",
+    "name": "this is for testing",
+    "blockchainType": "POLYGON",
+    "fileUrl": "https://google.com",
+    "multimediaFile": "{\"field1\":\"hello\",\"field2\":\"world\"}",
+    "price": 0,
+    "isOnSale": false,
+    "isOnLease": false,
+    "isOnAuction": false,
+    "isMetadataFrozen": false,
+    "tokenId": 1,
+    "itemId": 1,
+    "userId": 1,
+    "collectionId": 2,
+    "creatorId": 1,
+    "startSaleDate": "2022-02-18T23:58:11.836Z",
+    "endSaleDate": "2022-02-18T23:58:11.836Z",
+    "saleType": "COLLECTIBLE",
+    "collectibleCategory": "EXCLUSIVE",
+    "productKeyAccessTokenCategory": "MISCELLANEOUS",
+    "productKeyVirtualAssetCategory": "MISCELLANEOUS",
+    "isSensitiveContent": false,
+    "ercType": "ERC_721",
+    "likes": 0,
+    "descriptions": [
+        "a",
+        "b",
+        "c"
+    ],
+    "propertiesKey": [
+        "a",
+        "b",
+        "c"
+    ],
+    "propertiesValue": [
+        "a",
+        "b",
+        "c"
+    ],
+    "imagesKey": [
+        "a",
+        "b",
+        "c"
+    ],
+    "imagesValue": [
+        "a",
+        "b",
+        "c"
+    ],
+    "levelsKey": [
+        "a",
+        "b",
+        "c"
+    ],
+    "levelsValueNum": [
+        1,
+        2,
+        3
+    ],
+    "levelsValueDen": [
+        1,
+        2,
+        3
+    ]
+}
+
+-----
+
+Route:
+    /nfts/:tokenId
+    /nfts/1
+Type:
+    DELETE
+JSON:
+    None
+Result:
+{
+    "message": "Deleted the NFT: 1"
+}
+
+-----
+
+Route:
+    /nfts
+Type:
+    GET
+JSON:
+    None
+Result:
+[
+    {
+        "user": {
+            "email": "techandy42@gmail.com",
+            "address": "0x90F79bf6EB2c4f870365E785982E1f101E93b906",
+            "companyName": "This is for testing",
+            "createdAt": "2022-02-18T22:29:59.994Z",
+            "description": "This is for testing",
+            "facebookLink": "https://google.com",
+            "image": {
+                "field1": "hello",
+                "field2": "world"
+            },
+            "instagramLink": "https://google.com",
+            "linkedInLink": "https://google.com",
+            "mainLink": "https://google.com",
+            "twitterLink": "https://google.com",
+            "userName": "This is for testing",
+            "verified": false,
+            "verificationDate": null,
+            "role": "USER",
+            "likedNfts": [
+                1
+            ],
+            "cartNfts": [
+                2
+            ]
+        },
+        "creator": {
+            "email": "techandy42@gmail.com",
+            "address": "0x90F79bf6EB2c4f870365E785982E1f101E93b906",
+            "companyName": "This is for testing",
+            "createdAt": "2022-02-18T22:29:59.994Z",
+            "description": "This is for testing",
+            "facebookLink": "https://google.com",
+            "image": {
+                "field1": "hello",
+                "field2": "world"
+            },
+            "instagramLink": "https://google.com",
+            "linkedInLink": "https://google.com",
+            "mainLink": "https://google.com",
+            "twitterLink": "https://google.com",
+            "userName": "This is for testing",
+            "verified": false,
+            "verificationDate": null,
+            "role": "USER",
+            "likedNfts": [
+                1
+            ],
+            "cartNfts": [
+                2
+            ]
+        },
+        "collection": {
+            "image": null,
+            "description": "",
+            "createdAt": "2022-02-18T22:43:56.649Z",
+            "name": "collection-2"
+        },
+        "reviews": []
+    },
+    {
+        "user": {
+            "email": "techandy42@gmail.com",
+            "address": "0x90F79bf6EB2c4f870365E785982E1f101E93b906",
+            "companyName": "This is for testing",
+            "createdAt": "2022-02-18T22:29:59.994Z",
+            "description": "This is for testing",
+            "facebookLink": "https://google.com",
+            "image": {
+                "field1": "hello",
+                "field2": "world"
+            },
+            "instagramLink": "https://google.com",
+            "linkedInLink": "https://google.com",
+            "mainLink": "https://google.com",
+            "twitterLink": "https://google.com",
+            "userName": "This is for testing",
+            "verified": false,
+            "verificationDate": null,
+            "role": "USER",
+            "likedNfts": [
+                1
+            ],
+            "cartNfts": [
+                2
+            ]
+        },
+        "creator": {
+            "email": "techandy42@gmail.com",
+            "address": "0x90F79bf6EB2c4f870365E785982E1f101E93b906",
+            "companyName": "This is for testing",
+            "createdAt": "2022-02-18T22:29:59.994Z",
+            "description": "This is for testing",
+            "facebookLink": "https://google.com",
+            "image": {
+                "field1": "hello",
+                "field2": "world"
+            },
+            "instagramLink": "https://google.com",
+            "linkedInLink": "https://google.com",
+            "mainLink": "https://google.com",
+            "twitterLink": "https://google.com",
+            "userName": "This is for testing",
+            "verified": false,
+            "verificationDate": null,
+            "role": "USER",
+            "likedNfts": [
+                1
+            ],
+            "cartNfts": [
+                2
+            ]
+        },
+        "collection": {
+            "image": null,
+            "description": "",
+            "createdAt": "2022-02-18T22:43:56.649Z",
+            "name": "collection-2"
+        },
+        "reviews": []
+    },
+    {
+        "user": {
+            "email": "techandy42@gmail.com",
+            "address": "0x90F79bf6EB2c4f870365E785982E1f101E93b906",
+            "companyName": "This is for testing",
+            "createdAt": "2022-02-18T22:29:59.994Z",
+            "description": "This is for testing",
+            "facebookLink": "https://google.com",
+            "image": {
+                "field1": "hello",
+                "field2": "world"
+            },
+            "instagramLink": "https://google.com",
+            "linkedInLink": "https://google.com",
+            "mainLink": "https://google.com",
+            "twitterLink": "https://google.com",
+            "userName": "This is for testing",
+            "verified": false,
+            "verificationDate": null,
+            "role": "USER",
+            "likedNfts": [
+                1
+            ],
+            "cartNfts": [
+                2
+            ]
+        },
+        "creator": {
+            "email": "techandy42@gmail.com",
+            "address": "0x90F79bf6EB2c4f870365E785982E1f101E93b906",
+            "companyName": "This is for testing",
+            "createdAt": "2022-02-18T22:29:59.994Z",
+            "description": "This is for testing",
+            "facebookLink": "https://google.com",
+            "image": {
+                "field1": "hello",
+                "field2": "world"
+            },
+            "instagramLink": "https://google.com",
+            "linkedInLink": "https://google.com",
+            "mainLink": "https://google.com",
+            "twitterLink": "https://google.com",
+            "userName": "This is for testing",
+            "verified": false,
+            "verificationDate": null,
+            "role": "USER",
+            "likedNfts": [
+                1
+            ],
+            "cartNfts": [
+                2
+            ]
+        },
+        "collection": {
+            "image": null,
+            "description": "",
+            "createdAt": "2022-02-18T22:43:56.649Z",
+            "name": "collection-2"
+        },
+        "reviews": []
+    }
+]
+
+-----
+
+SQL Query:
+
+SELECT * FROM nfts;
+
+ id |                 uuid                 |       created_at        |       updated_at        | name  | collection_id |      end_sale_date      |      file_url      | is_metadata_frozen | is_on_sale | is_sensitive_content |            multimedia_file             | price |  sale_type  | token_id | user_id | collectible_category | product_key_virtual_asset_category | item_id | blockchain_type | erc_type |     start_sale_date     | creator_id | likes | is_on_lease | descriptions | imagesKey | imagesValue | is_on_auction | levelsKey | levelsValueDen | levelsValueNum | propertiesKey | propertiesValue | product_key_access_token_category
+----+--------------------------------------+-------------------------+-------------------------+-------+---------------+-------------------------+--------------------+--------------------+------------+----------------------+----------------------------------------+-------+-------------+----------+---------+----------------------+------------------------------------+---------+-----------------+----------+-------------------------+------------+-------+-------------+--------------+-----------+-------------+---------------+-----------+----------------+----------------+---------------+-----------------+-----------------------------------
+  2 | f9b214e7-0d67-4fec-8964-761fac70101e | 2022-02-18 23:07:04.921 | 2022-02-18 23:07:04.922 | one   |             2 | 2022-02-18 23:07:04.921 | https://google.com | f                  | f          | f                    | {"field1": "hello", "field2": "world"} |     0 | COLLECTIBLE |        2 |       1 | MISCELLANEOUS        | MISCELLANEOUS                      |       2 | POLYGON         | ERC_721  | 2022-02-18 23:07:04.921 |          1 |     0 | f           | {}           | {}        | {}          | f             | {}        | {}             | {}             | {}            | {}              | MISCELLANEOUS
+  3 | 702bbe71-ec7f-463a-9f64-86e3eb8a9dd7 | 2022-02-18 23:07:04.93  | 2022-02-18 23:07:04.931 | two   |             2 | 2022-02-18 23:07:04.93  | https://google.com | f                  | f          | f                    | {"field1": "hello", "field2": "world"} |     0 | COLLECTIBLE |        3 |       1 | MISCELLANEOUS        | MISCELLANEOUS                      |       3 | POLYGON         | ERC_721  | 2022-02-18 23:07:04.93  |          1 |     0 | f           | {}           | {}        | {}          | f             | {}        | {}             | {}             | {}            | {}              | MISCELLANEOUS
+  4 | 74d0ec2d-3994-4a9a-abc5-b483670b408e | 2022-02-18 23:07:04.938 | 2022-02-18 23:07:04.939 | three |             2 | 2022-02-18 23:07:04.938 | https://google.com | f                  | f          | f                    | {"field1": "hello", "field2": "world"} |     0 | COLLECTIBLE |        4 |       1 | MISCELLANEOUS        | MISCELLANEOUS                      |       4 | POLYGON         | ERC_721  | 2022-02-18 23:07:04.938 |          1 |     0 | f           | {}           | {}        | {}          | f             | {}        | {}             | {}             | {}            | {}              | MISCELLANEOUS
+
+-----
