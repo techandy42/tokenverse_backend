@@ -4,9 +4,16 @@ import usersRoutes from './routes/users'
 import nftsRoutes from './routes/nfts'
 import collectionsRoutes from './routes/collections'
 import reviewsRoutes from './routes/reviews'
+import cors from 'cors'
 
 const app = express()
 app.use(express.json())
+// Modify at deployment
+app.use(
+  cors({
+    origin: '*',
+  }),
+)
 
 // schemas:
 // user --> address
