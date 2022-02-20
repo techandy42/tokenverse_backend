@@ -1,11 +1,8 @@
-const nftTransferInitializer = (
-  nft: any,
-  multimediaFileTypeChecked: string,
-) => {
+const nftTransferInitializer = (nft: any) => {
   const data = {
     name: nft.name,
     fileUrl: nft.fileUrl,
-    multimediaFile: multimediaFileTypeChecked,
+    multimediaFileUrl: nft.multimediaFileUrl,
     isMetadataFrozen: nft.isMetadataFrozen,
     collection: nft.collection,
     saleType: nft.saleType,

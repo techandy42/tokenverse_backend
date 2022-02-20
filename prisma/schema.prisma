@@ -22,7 +22,7 @@ model User {
   createdAt     DateTime     @default(now()) @map("created_at")
   description   String       @default("")
   facebookLink  String       @default("") @map("facebook_link")
-  image         Json?
+  image         String?
   instagramLink String       @default("") @map("instagram_link")
   linkedInLink  String       @default("") @map("linked_in_link")
   mainLink      String       @default("") @map("main_link")
@@ -51,7 +51,7 @@ model NFT {
   blockchainType     BlockchainType     @map("blockchain_type")
   fileUrl            String     @map("file_url")
   // File     
-  multimediaFile     Json?      @map("multimedia_file")    
+  multimediaFileUrl  String?    @map("multimedia_file_url")    
   price              Int        @default(0)
   isOnSale           Boolean    @default(false) @map("is_on_sale")
   isOnLease          Boolean    @default(false) @map("is_on_lease")
@@ -104,7 +104,7 @@ model Review {
 }
 
 model Collection {
-  image         Json?
+  image         String?
   description   String @default("")
   id        Int      @id @default(autoincrement())
   uuid      String   @unique @default(uuid())

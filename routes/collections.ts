@@ -6,6 +6,7 @@ import {
   selectionNFT,
   selectionReview,
 } from '../constants/selections'
+import { isUrlValid } from '../functions/validations'
 
 const prisma = new PrismaClient()
 const router = express.Router()
@@ -111,11 +112,18 @@ router.put('/change-name/:name', async (req: Request, res: Response) => {
 router.put('/change-info/:name', async (req: Request, res: Response) => {
   const name = req.params.name
   const { newName, image, description } = req.body
-  const data =
-    image === null
-      ? { name: newName, description }
-      : { name: newName, description, image }
+  const imageTypeChecked = image === null ? undefined : image
   try {
+    const imageValidity =
+      imageTypeChecked === undefined || isUrlValid(imageTypeChecked)
+        ? true
+        : false
+    if (!imageValidity) throw { error: 'Invalid image url' }
+    const data = {
+      name: newName,
+      description,
+      image: imageTypeChecked,
+    }
     let collection = await prisma.collection.findUnique({ where: { name } })
     let existingNewNamedCollection = await prisma.collection.findUnique({
       where: { name: newName },

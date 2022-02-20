@@ -32,20 +32,27 @@ router.post(
       name,
       blockchainType,
       fileUrl,
-      multimediaFile,
+      multimediaFileUrl,
       tokenId,
       itemId,
       collection,
       ercType,
     } = req.body
-    const multimediaFileTypeChecked =
-      multimediaFile === null ? undefined : multimediaFile
+    const multimediaFileUrlTypeChecked =
+      multimediaFileUrl === null ? undefined : multimediaFileUrl
     try {
       const fileUrlValidity =
         fileUrl === '' || isUrlValid(fileUrl) ? true : false
+      const multimediaFileUrlValidity =
+        multimediaFileUrlTypeChecked === undefined ||
+        isUrlValid(multimediaFileUrlTypeChecked)
+          ? true
+          : false
       if (!fileUrlValidity) throw { error: 'Invalid fileUrl' }
+      if (!multimediaFileUrlValidity)
+        throw { error: 'Invalid multimediaFileUrl' }
       const data = {
-        multimediaFile: multimediaFileTypeChecked,
+        multimediaFileUrl: multimediaFileUrlTypeChecked,
         name,
         blockchainType,
         fileUrl,
@@ -83,7 +90,7 @@ router.post(
       names,
       blockchainType,
       fileUrls,
-      multimediaFiles,
+      multimediaFileUrls,
       tokenIds,
       itemIds,
       collection,
@@ -93,7 +100,7 @@ router.post(
       const namesLength = names.length
       if (
         namesLength !== fileUrls.length ||
-        namesLength !== multimediaFiles.length ||
+        namesLength !== multimediaFileUrls.length ||
         namesLength !== tokenIds.length ||
         namesLength !== itemIds.length
       ) {
@@ -101,18 +108,25 @@ router.post(
       }
       const nfts: any = []
       for (let i = 0; i < namesLength; i++) {
-        const multimediaFile = multimediaFiles[i]
+        const multimediaFileUrl = multimediaFileUrls[i]
         const fileUrl = fileUrls[i]
         const name = names[i]
         const tokenId = tokenIds[i]
         const itemId = itemIds[i]
-        const multimediaFileTypeChecked =
-          multimediaFile === null ? undefined : multimediaFile
+        const multimediaFileUrlTypeChecked =
+          multimediaFileUrl === null ? undefined : multimediaFileUrl
         const fileUrlValidity =
           fileUrl === '' || isUrlValid(fileUrl) ? true : false
+        const multimediaFileUrlValidity =
+          multimediaFileUrlTypeChecked === undefined ||
+          isUrlValid(multimediaFileUrlTypeChecked)
+            ? true
+            : false
         if (!fileUrlValidity) throw { error: 'Invalid fileUrl' }
+        if (!multimediaFileUrlValidity)
+          throw { error: 'Invalid multimediaFileUrl' }
         const data = {
-          multimediaFile: multimediaFileTypeChecked,
+          multimediaFileUrl: multimediaFileUrlTypeChecked,
           name,
           blockchainType,
           fileUrl,
@@ -249,7 +263,7 @@ router.put(
     const {
       name,
       fileUrl,
-      multimediaFile,
+      multimediaFileUrl,
       isMetadataFrozen,
       collection,
       saleType,
@@ -266,12 +280,19 @@ router.put(
       levelsValueNum,
       levelsValueDen,
     } = req.body
-    const multimediaFileTypeChecked =
-      multimediaFile === null ? undefined : multimediaFile
+    const multimediaFileUrlTypeChecked =
+      multimediaFileUrl === null ? undefined : multimediaFileUrl
     try {
       const fileUrlValidity =
         fileUrl === '' || isUrlValid(fileUrl) ? true : false
+      const multimediaFileUrlValidity =
+        multimediaFileUrlTypeChecked === undefined ||
+        isUrlValid(multimediaFileUrlTypeChecked)
+          ? true
+          : false
       if (!fileUrlValidity) throw { error: 'Invalid fileUrl' }
+      if (!multimediaFileUrlValidity)
+        throw { error: 'Invalid multimediaFileUrl' }
       let nft = await prisma.nFT.findUnique({
         where: { tokenId },
         select: {
@@ -309,7 +330,7 @@ router.put(
       const data = {
         name,
         fileUrl,
-        multimediaFile: multimediaFileTypeChecked,
+        multimediaFileUrl: multimediaFileUrlTypeChecked,
         isMetadataFrozen,
         collection,
         saleType,
@@ -386,8 +407,7 @@ router.put(
       await prisma.nFT.delete({ where: { tokenId } })
 
       // create a new NFT with modified data
-      const multimediaFileTypeChecked = JSON.stringify(nft.multimediaFile)
-      let data = nftTransferInitializer(nft, multimediaFileTypeChecked)
+      let data = nftTransferInitializer(nft)
       data = { ...data, ...nftSaleLeaseAuctionInitializer }
       const newNft = await prisma.nFT.create({
         data: {

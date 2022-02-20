@@ -196,6 +196,10 @@ router.put('/:address', async (req: Request, res: Response) => {
   } = req.body
   const imageTypeChecked = image === null ? undefined : image
   try {
+    const imageValidity =
+      imageTypeChecked === undefined || isUrlValid(imageTypeChecked)
+        ? true
+        : false
     const emailValidity = email === '' || isEmailValid(email) ? true : false
     const mainLinkValidity =
       mainLink === '' || isUrlValid(mainLink) ? true : false
@@ -208,6 +212,7 @@ router.put('/:address', async (req: Request, res: Response) => {
     const linkedInLinkValidity =
       linkedInLink === '' || isUrlValid(linkedInLink) ? true : false
     if (
+      !imageValidity ||
       !emailValidity ||
       !mainLinkValidity ||
       !facebookLinkValidity ||

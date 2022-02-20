@@ -23,7 +23,7 @@ export const selectionNFT = {
   name: true,
   blockchainType: true,
   fileUrl: true,
-  multimediaFile: true,
+  multimediaFileUrl: true,
   price: true,
   isOnSale: true,
   isOnLease: true,
