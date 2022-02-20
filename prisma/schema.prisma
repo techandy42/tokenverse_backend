@@ -16,6 +16,7 @@ datasource db {
 model User {
   id            Int          @id @default(autoincrement())
   email         String       @default("")
+  // address is in lowercase
   address       String       @unique
   companyName   String       @default("") @map("company_name")
   createdAt     DateTime     @default(now()) @map("created_at")
@@ -110,6 +111,7 @@ model Collection {
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
   name      String   @unique
+  isNameModified   Boolean @default(false) @map("is_name_modified")
   userId    Int      @map("user_id")
   user      User     @relation(fields: [userId], references: [id], onUpdate: Cascade, onDelete: Cascade)
   nfts      NFT[]

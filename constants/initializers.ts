@@ -14,6 +14,6 @@ export const nftSaleLeaseAuctionInitializer = {
   isOnSale: false,
   isOnLease: false,
   isOnAuction: false,
-  startSaleDate: new Date(),
-  endSaleDate: new Date(),
+  startSaleDate: new Date(0, 0, 0, 0, 0, 0),
+  endSaleDate: new Date(0, 0, 0, 0, 0, 0),
 }

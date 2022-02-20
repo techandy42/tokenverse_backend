@@ -60,4 +60,5 @@ export const selectionCollection = {
   description: true,
   createdAt: true,
   name: true,
+  isNameModified: true,
 }
