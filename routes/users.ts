@@ -79,6 +79,43 @@ router.get('/:address', async (req: Request, res: Response) => {
   }
 })
 
+/* Fetches a user by userName */
+router.get('/username/:userName', async (req: Request, res: Response) => {
+  const userName = req.params.userName
+  try {
+    const user = await prisma.user.findUnique({
+      where: { userName },
+      select: {
+        ...selectionUser,
+        collections: {
+          select: {
+            ...selectionCollection,
+          },
+        },
+        nfts: {
+          select: {
+            ...selectionNFT,
+          },
+        },
+        nftscreated: {
+          select: {
+            ...selectionNFT,
+          },
+        },
+        reviews: {
+          select: {
+            ...selectionReview,
+          },
+        },
+      },
+    })
+    return res.json(user)
+  } catch (error) {
+    console.log(error)
+    return res.status(400).json({ error: 'User not found' })
+  }
+})
+
 /* Fetches all the liked NFT of a user */
 router.get('/liked/:address', async (req: Request, res: Response) => {
   const address = req.params.address
@@ -216,7 +253,7 @@ router.put('/:address', async (req: Request, res: Response) => {
       !emailValidity ||
       !mainLinkValidity ||
       !facebookLinkValidity ||
-      !instagramLink ||
+      !instagramLinkValidity ||
       !twitterLinkValidity ||
       !linkedInLinkValidity
     )
