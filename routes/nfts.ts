@@ -450,6 +450,7 @@ router.get('/', async (req: Request, res: Response) => {
   try {
     const nfts = await prisma.nFT.findMany({
       select: {
+        ...selectionNFT,
         user: {
           select: {
             ...selectionUser,
@@ -487,6 +488,7 @@ router.get('/:tokenId', async (req: Request, res: Response) => {
     const nft = await prisma.nFT.findUnique({
       where: { tokenId },
       select: {
+        ...selectionNFT,
         user: {
           select: {
             ...selectionUser,

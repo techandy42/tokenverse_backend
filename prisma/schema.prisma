@@ -99,7 +99,7 @@ model Review {
   // example: rating: 45 -> 4.5     
   rating             Int        @default(0)
   comment            String     @default("")
-
+  title              String     @default("")
   @@map("reviews")
 }
 

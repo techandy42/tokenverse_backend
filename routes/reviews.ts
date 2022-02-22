@@ -40,12 +40,13 @@ router.post(
   reviewPostValidationRules,
   checkForErrors,
   async (req: Request, res: Response) => {
-    const { address, tokenId, rating, comment } = req.body
+    const { address, tokenId, rating, comment, title } = req.body
     const ratingTypeChecked = parseInt(rating)
     try {
       const data = {
         rating: ratingTypeChecked,
         comment,
+        title,
       }
       const review = await prisma.review.create({
         data: {
@@ -68,12 +69,13 @@ router.post(
 router.put('/:id', async (req: Request, res: Response) => {
   let id: string | number = req.params.id
   id = parseInt(id)
-  const { rating, comment } = req.body
+  const { rating, comment, title } = req.body
   const ratingTypeChecked = parseInt(rating)
   try {
     const data = {
       rating: ratingTypeChecked,
       comment,
+      title,
     }
     const review = await prisma.review.update({
       where: { id },

@@ -53,6 +53,7 @@ export const selectionNFT = {
 export const selectionReview = {
   rating: true,
   comment: true,
+  title: true,
 }
 
 export const selectionCollection = {
