@@ -23,12 +23,16 @@ router.post('/:address', async (req: Request, res: Response) => {
       },
     })
     const collectionId = lastId[0] ? lastId[0].id + 1 : 1
+
+    // For Testing
+    console.log('collectionId: ', collectionId)
+
     let name = `collection-${collectionId}`
     // checks if there exists a collection
     let collection = await prisma.collection.findUnique({
       where: { name },
     })
-    // creates the collection with the name `collection#${lastId}`
+    // creates the collection with the name `collection-${lastId}`
     if (!collection) {
       collection = await prisma.collection.create({
         data: {
@@ -97,6 +101,7 @@ router.put('/change-name/:name', async (req: Request, res: Response) => {
       where: { name },
       data: {
         name: newName,
+        isNameModified: true,
       },
     })
     return res.json(collection)
@@ -123,6 +128,7 @@ router.put('/change-info/:name', async (req: Request, res: Response) => {
       name: newName,
       description,
       image: imageTypeChecked,
+      isNameModified: true,
     }
     let collection = await prisma.collection.findUnique({ where: { name } })
     let existingNewNamedCollection = await prisma.collection.findUnique({
