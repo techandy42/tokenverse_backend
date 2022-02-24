@@ -85,34 +85,6 @@ router.get('/:name', async (req: Request, res: Response) => {
   }
 })
 
-/* Modifies the name of a collection */
-router.put('/change-name/:name', async (req: Request, res: Response) => {
-  const name = req.params.name
-  const { newName } = req.body
-  try {
-    let collection = await prisma.collection.findUnique({ where: { name } })
-    let existingNewNamedCollection = await prisma.collection.findUnique({
-      where: { name: newName },
-    })
-    if (!collection) throw { error: `Cannot find the collection: ${name}` }
-    if (existingNewNamedCollection)
-      throw { error: `Collection with the name ${newName} already exists` }
-    collection = await prisma.collection.update({
-      where: { name },
-      data: {
-        name: newName,
-        isNameModified: true,
-      },
-    })
-    return res.json(collection)
-  } catch (error) {
-    console.log(error)
-    return res
-      .status(400)
-      .json({ error: `Error on updating collection: ${name}` })
-  }
-})
-
 /* Modifies the name / image / description of a collection */
 router.put('/change-info/:name', async (req: Request, res: Response) => {
   const name = req.params.name

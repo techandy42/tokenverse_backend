@@ -50,26 +50,6 @@ router.get('/:address', async (req: Request, res: Response) => {
       where: { address },
       select: {
         ...selectionUser,
-        collections: {
-          select: {
-            ...selectionCollection,
-          },
-        },
-        nfts: {
-          select: {
-            ...selectionNFT,
-          },
-        },
-        nftscreated: {
-          select: {
-            ...selectionNFT,
-          },
-        },
-        reviews: {
-          select: {
-            ...selectionReview,
-          },
-        },
       },
     })
     return res.json(user)
@@ -87,24 +67,61 @@ router.get('/username/:userName', async (req: Request, res: Response) => {
       where: { userName },
       select: {
         ...selectionUser,
+      },
+    })
+    return res.json(user)
+  } catch (error) {
+    console.log(error)
+    return res.status(400).json({ error: 'User not found' })
+  }
+})
+
+/* Fetches a user's collections */
+router.get('/collections/:address', async (req: Request, res: Response) => {
+  const address = req.params.address
+  try {
+    const user = await prisma.user.findUnique({
+      where: { address },
+      select: {
         collections: {
           select: {
             ...selectionCollection,
           },
         },
+      },
+    })
+    return res.json(user)
+  } catch (error) {
+    console.log(error)
+    return res.status(400).json({ error: 'User not found' })
+  }
+})
+
+/* Fetches a user's nfts and nftscreated */
+router.get('/nfts/:address', async (req: Request, res: Response) => {
+  const address = req.params.address
+  try {
+    const user = await prisma.user.findUnique({
+      where: { address },
+      select: {
         nfts: {
           select: {
             ...selectionNFT,
+            collection: {
+              select: {
+                ...selectionCollection,
+              },
+            },
           },
         },
         nftscreated: {
           select: {
             ...selectionNFT,
-          },
-        },
-        reviews: {
-          select: {
-            ...selectionReview,
+            collection: {
+              select: {
+                ...selectionCollection,
+              },
+            },
           },
         },
       },
