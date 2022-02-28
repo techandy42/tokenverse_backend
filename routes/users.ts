@@ -80,7 +80,7 @@ router.get('/username/:userName', async (req: Request, res: Response) => {
 router.get('/collections/:address', async (req: Request, res: Response) => {
   const address = req.params.address
   try {
-    const user = await prisma.user.findUnique({
+    const userCollections = await prisma.user.findUnique({
       where: { address },
       select: {
         collections: {
@@ -90,7 +90,7 @@ router.get('/collections/:address', async (req: Request, res: Response) => {
         },
       },
     })
-    return res.json(user)
+    return res.json(userCollections)
   } catch (error) {
     console.log(error)
     return res.status(400).json({ error: 'User not found' })

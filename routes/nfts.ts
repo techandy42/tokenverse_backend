@@ -61,6 +61,21 @@ router.post(
         ercType,
         ...nftArraysInitializer,
       }
+
+      // before creating the token
+      const userCollections = await prisma.user.findUnique({
+        where: { address },
+        select: {
+          collections: {
+            select: {
+              ...selectionCollection,
+            },
+          },
+        },
+      })
+      console.log('collection: ', collection)
+      console.log('userCollections: ', userCollections)
+
       const nft = await prisma.nFT.create({
         data: {
           ...data,
