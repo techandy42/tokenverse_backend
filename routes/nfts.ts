@@ -17,6 +17,7 @@ import {
   isUrlValid,
 } from '../functions/validations'
 import nftTransferInitializer from '../functions/nftTransferInitializer'
+import decodeTokenIds from '../functions/decodeTokenIds'
 
 const prisma = new PrismaClient()
 const router = express.Router()
@@ -61,21 +62,6 @@ router.post(
         ercType,
         ...nftArraysInitializer,
       }
-
-      // before creating the token
-      const userCollections = await prisma.user.findUnique({
-        where: { address },
-        select: {
-          collections: {
-            select: {
-              ...selectionCollection,
-            },
-          },
-        },
-      })
-      console.log('collection: ', collection)
-      console.log('userCollections: ', userCollections)
-
       const nft = await prisma.nFT.create({
         data: {
           ...data,
@@ -494,6 +480,51 @@ router.get('/', async (req: Request, res: Response) => {
     res.status(400).json({ error: 'Error occurred while fetching NFTs' })
   }
 })
+
+/* Fetches multiple NFTs by tokenIds */
+router.get(
+  '/multiple/:tokenIdsEncoded',
+  async (req: Request, res: Response) => {
+    const tokenIdsEncoded: string = req.params.tokenIdsEncoded
+    const tokenIds = decodeTokenIds(tokenIdsEncoded)
+    try {
+      const nfts = []
+      for (const tokenId of tokenIds) {
+        const nft = await prisma.nFT.findUnique({
+          where: { tokenId },
+          select: {
+            ...selectionNFT,
+            user: {
+              select: {
+                ...selectionUser,
+              },
+            },
+            creator: {
+              select: {
+                ...selectionUser,
+              },
+            },
+            collection: {
+              select: {
+                ...selectionCollection,
+              },
+            },
+            reviews: {
+              select: {
+                ...selectionReview,
+              },
+            },
+          },
+        })
+        nfts.push(nft)
+      }
+      res.json(nfts)
+    } catch (error) {
+      console.log(error)
+      res.status(400).json({ error: `Error occurred while fetching the NFTs` })
+    }
+  },
+)
 
 /* Fetches one NFT by tokenId */
 router.get('/:tokenId', async (req: Request, res: Response) => {

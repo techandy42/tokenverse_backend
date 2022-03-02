@@ -57,6 +57,7 @@ export const selectionReview = {
 }
 
 export const selectionCollection = {
+  uuid: true,
   image: true,
   description: true,
   createdAt: true,
