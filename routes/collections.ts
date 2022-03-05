@@ -6,50 +6,54 @@ import {
   selectionNFT,
   selectionReview,
 } from '../constants/selections'
-import { isUrlValid } from '../functions/validations'
+import { isUrlValid, checkForErrors } from '../functions/validations'
 
 const prisma = new PrismaClient()
 const router = express.Router()
 
 /* Creates a collection */
-router.post('/:address', async (req: Request, res: Response) => {
-  const address = req.params.address
-  try {
-    const lastId = await prisma.collection.findMany({
-      orderBy: { id: 'desc' },
-      take: 1,
-      select: {
-        id: true,
-      },
-    })
-    const collectionId = lastId[0] ? lastId[0].id + 1 : 1
-
-    // For Testing
-    console.log('collectionId: ', collectionId)
-
-    let name = `collection-${collectionId}`
-    // checks if there exists a collection
-    let collection = await prisma.collection.findUnique({
-      where: { name },
-    })
-    // creates the collection with the name `collection-${lastId}`
-    if (!collection) {
-      collection = await prisma.collection.create({
-        data: {
-          name,
-          user: { connect: { address } },
+router.post(
+  '/:address',
+  checkForErrors,
+  async (req: Request, res: Response) => {
+    const address = req.params.address
+    try {
+      const lastId = await prisma.collection.findMany({
+        orderBy: { id: 'desc' },
+        take: 1,
+        select: {
+          id: true,
         },
       })
+      const collectionId = lastId[0] ? lastId[0].id + 1 : 1
+
+      // For Testing
+      console.log('collectionId: ', collectionId)
+
+      let name = `collection-${collectionId}`
+      // checks if there exists a collection
+      let collection = await prisma.collection.findUnique({
+        where: { name },
+      })
+      // creates the collection with the name `collection-${lastId}`
+      if (!collection) {
+        collection = await prisma.collection.create({
+          data: {
+            name,
+            user: { connect: { address } },
+          },
+        })
+      }
+      return res.json(collection)
+    } catch (error) {
+      console.log(error)
+      return res.status(500).json({
+        error:
+          'Error in the server while searching for the last id of the collections',
+      })
     }
-    return res.json(collection)
-  } catch (error) {
-    console.log(error)
-    return res.status(500).json({
-      error:
-        'Error in the server while searching for the last id of the collections',
-    })
-  }
-})
+  },
+)
 
 /* Fetches a collection */
 router.get('/:name', async (req: Request, res: Response) => {
@@ -86,44 +90,48 @@ router.get('/:name', async (req: Request, res: Response) => {
 })
 
 /* Modifies the name / image / description of a collection */
-router.put('/change-info/:name', async (req: Request, res: Response) => {
-  const name = req.params.name
-  const { newName, image, description } = req.body
-  const imageTypeChecked = image === null ? undefined : image
-  try {
-    const imageValidity =
-      imageTypeChecked === undefined || isUrlValid(imageTypeChecked)
-        ? true
-        : false
-    if (!imageValidity) throw { error: 'Invalid image url' }
-    const data = {
-      name: newName,
-      description,
-      image: imageTypeChecked,
-      isNameModified: true,
+router.put(
+  '/change-info/:name',
+  checkForErrors,
+  async (req: Request, res: Response) => {
+    const name = req.params.name
+    const { newName, image, description } = req.body
+    const imageTypeChecked = image === null ? undefined : image
+    try {
+      const imageValidity =
+        imageTypeChecked === undefined || isUrlValid(imageTypeChecked)
+          ? true
+          : false
+      if (!imageValidity) throw { error: 'Invalid image url' }
+      const data = {
+        name: newName,
+        description,
+        image: imageTypeChecked,
+        isNameModified: true,
+      }
+      let collection = await prisma.collection.findUnique({ where: { name } })
+      let existingNewNamedCollection = await prisma.collection.findUnique({
+        where: { name: newName },
+      })
+      if (!collection) throw { error: `Cannot find the collection: ${name}` }
+      if (existingNewNamedCollection)
+        throw { error: `Collection with the name ${newName} already exists` }
+      collection = await prisma.collection.update({
+        where: { name },
+        data: data,
+      })
+      return res.json(collection)
+    } catch (error) {
+      console.log(error)
+      return res
+        .status(400)
+        .json({ error: `Error on updating collection: ${name}` })
     }
-    let collection = await prisma.collection.findUnique({ where: { name } })
-    let existingNewNamedCollection = await prisma.collection.findUnique({
-      where: { name: newName },
-    })
-    if (!collection) throw { error: `Cannot find the collection: ${name}` }
-    if (existingNewNamedCollection)
-      throw { error: `Collection with the name ${newName} already exists` }
-    collection = await prisma.collection.update({
-      where: { name },
-      data: data,
-    })
-    return res.json(collection)
-  } catch (error) {
-    console.log(error)
-    return res
-      .status(400)
-      .json({ error: `Error on updating collection: ${name}` })
-  }
-})
+  },
+)
 
 /* Deletes a collection */
-router.delete('/:name', async (req: Request, res: Response) => {
+router.delete('/:name', checkForErrors, async (req: Request, res: Response) => {
   const name = req.params.name
   try {
     let collection = await prisma.collection.findUnique({

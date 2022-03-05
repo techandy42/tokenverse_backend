@@ -66,7 +66,7 @@ router.post(
 )
 
 /* Modifies a review */
-router.put('/:id', async (req: Request, res: Response) => {
+router.put('/:id', checkForErrors, async (req: Request, res: Response) => {
   let id: string | number = req.params.id
   id = parseInt(id)
   const { rating, comment, title } = req.body
@@ -91,7 +91,7 @@ router.put('/:id', async (req: Request, res: Response) => {
 })
 
 /* Deletes a review */
-router.delete('/:id', async (req: Request, res: Response) => {
+router.delete('/:id', checkForErrors, async (req: Request, res: Response) => {
   let id: string | number = req.params.id
   id = parseInt(id)
   try {

@@ -184,57 +184,65 @@ router.get('/cart/:address', async (req: Request, res: Response) => {
 })
 
 /* Adds a liked NFT tokenId to a user */
-router.put('/liked/:address', async (req: Request, res: Response) => {
-  const address = req.params.address
-  const { tokenId } = req.body
-  try {
-    let user = await prisma.user.findUnique({ where: { address } })
-    if (!user) throw { error: `Cannot find the user: ${address}` }
-    let nft = await prisma.nFT.findUnique({ where: { tokenId } })
-    if (!nft) throw { error: `Cannot find the NFT: ${tokenId}` }
-    const likedNfts = user.likedNfts
-    user = await prisma.user.update({
-      where: { address },
-      data: {
-        likedNfts: [...likedNfts, tokenId],
-      },
-    })
-    return res.json(user)
-  } catch (error) {
-    console.log(error)
-    return res
-      .status(400)
-      .json({ error: `User not found or invalid tokenId ${tokenId}` })
-  }
-})
+router.put(
+  '/liked/:address',
+  checkForErrors,
+  async (req: Request, res: Response) => {
+    const address = req.params.address
+    const { tokenId } = req.body
+    try {
+      let user = await prisma.user.findUnique({ where: { address } })
+      if (!user) throw { error: `Cannot find the user: ${address}` }
+      let nft = await prisma.nFT.findUnique({ where: { tokenId } })
+      if (!nft) throw { error: `Cannot find the NFT: ${tokenId}` }
+      const likedNfts = user.likedNfts
+      user = await prisma.user.update({
+        where: { address },
+        data: {
+          likedNfts: [...likedNfts, tokenId],
+        },
+      })
+      return res.json(user)
+    } catch (error) {
+      console.log(error)
+      return res
+        .status(400)
+        .json({ error: `User not found or invalid tokenId ${tokenId}` })
+    }
+  },
+)
 
 /* Adds a cart NFT tokenId to a user */
-router.put('/cart/:address', async (req: Request, res: Response) => {
-  const address = req.params.address
-  const { tokenId } = req.body
-  try {
-    let user = await prisma.user.findUnique({ where: { address } })
-    if (!user) throw { error: `Cannot find the user: ${address}` }
-    let nft = await prisma.nFT.findUnique({ where: { tokenId } })
-    if (!nft) throw { error: `Cannot find the NFT: ${tokenId}` }
-    const cartNfts = user.cartNfts
-    user = await prisma.user.update({
-      where: { address },
-      data: {
-        cartNfts: [...cartNfts, tokenId],
-      },
-    })
-    return res.json(user)
-  } catch (error) {
-    console.log(error)
-    return res
-      .status(400)
-      .json({ error: `User not found or invalid tokenId ${tokenId}` })
-  }
-})
+router.put(
+  '/cart/:address',
+  checkForErrors,
+  async (req: Request, res: Response) => {
+    const address = req.params.address
+    const { tokenId } = req.body
+    try {
+      let user = await prisma.user.findUnique({ where: { address } })
+      if (!user) throw { error: `Cannot find the user: ${address}` }
+      let nft = await prisma.nFT.findUnique({ where: { tokenId } })
+      if (!nft) throw { error: `Cannot find the NFT: ${tokenId}` }
+      const cartNfts = user.cartNfts
+      user = await prisma.user.update({
+        where: { address },
+        data: {
+          cartNfts: [...cartNfts, tokenId],
+        },
+      })
+      return res.json(user)
+    } catch (error) {
+      console.log(error)
+      return res
+        .status(400)
+        .json({ error: `User not found or invalid tokenId ${tokenId}` })
+    }
+  },
+)
 
 /* Modifies a user */
-router.put('/:address', async (req: Request, res: Response) => {
+router.put('/:address', checkForErrors, async (req: Request, res: Response) => {
   const address = req.params.address
   const {
     image,

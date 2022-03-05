@@ -18,6 +18,7 @@ import {
 } from '../functions/validations'
 import nftTransferInitializer from '../functions/nftTransferInitializer'
 import decodeTokenIds from '../functions/decodeTokenIds'
+import { rmSync } from 'fs'
 
 const prisma = new PrismaClient()
 const router = express.Router()
@@ -155,104 +156,112 @@ router.post(
 )
 
 /* Puts the NFT on market */
-router.put('/on-market/:tokenId', async (req: Request, res: Response) => {
-  let tokenId: string | number = req.params.tokenId
-  tokenId = parseInt(tokenId)
-  const {
-    // data
-    price,
-    isOnSale,
-    isOnLease,
-    isOnAuction,
-    startSaleDate,
-    endSaleDate,
-    // metadata
-    saleType,
-    collectibleCategory,
-    productKeyAccessTokenCategory,
-    productKeyVirtualAssetCategory,
-    isSensitiveContent,
-    descriptions,
-    propertiesKey,
-    propertiesValue,
-    imagesKey,
-    imagesValue,
-    levelsKey,
-    levelsValueNum,
-    levelsValueDen,
-  } = req.body
-  try {
-    if (
-      propertiesKey.length !== propertiesValue.length ||
-      imagesKey.length !== imagesValue.length ||
-      levelsKey.length !== levelsValueNum.length ||
-      levelsKey.length !== levelsValueDen.length
-    ) {
-      throw {
-        error: 'The length of the keys and values of inputs must be the same',
-      }
-    }
-    let nft = await prisma.nFT.findUnique({
-      where: { tokenId },
-    })
-    let data = {
-      price: parseInt(price),
+router.put(
+  '/on-market/:tokenId',
+  checkForErrors,
+  async (req: Request, res: Response) => {
+    let tokenId: string | number = req.params.tokenId
+    tokenId = parseInt(tokenId)
+    const {
+      // data
+      price,
       isOnSale,
       isOnLease,
       isOnAuction,
       startSaleDate,
       endSaleDate,
-    }
-
-    if (nft?.isMetadataFrozen) {
-      const metadata = {
-        saleType,
-        collectibleCategory,
-        productKeyAccessTokenCategory,
-        productKeyVirtualAssetCategory,
-        isSensitiveContent,
-        descriptions,
-        propertiesKey,
-        propertiesValue,
-        imagesKey,
-        imagesValue,
-        levelsKey,
-        levelsValueNum,
-        levelsValueDen,
+      // metadata
+      saleType,
+      collectibleCategory,
+      productKeyAccessTokenCategory,
+      productKeyVirtualAssetCategory,
+      isSensitiveContent,
+      descriptions,
+      propertiesKey,
+      propertiesValue,
+      imagesKey,
+      imagesValue,
+      levelsKey,
+      levelsValueNum,
+      levelsValueDen,
+    } = req.body
+    try {
+      if (
+        propertiesKey.length !== propertiesValue.length ||
+        imagesKey.length !== imagesValue.length ||
+        levelsKey.length !== levelsValueNum.length ||
+        levelsKey.length !== levelsValueDen.length
+      ) {
+        throw {
+          error: 'The length of the keys and values of inputs must be the same',
+        }
       }
-      data = { ...data, ...metadata }
+      let nft = await prisma.nFT.findUnique({
+        where: { tokenId },
+      })
+      let data = {
+        price: parseInt(price),
+        isOnSale,
+        isOnLease,
+        isOnAuction,
+        startSaleDate,
+        endSaleDate,
+      }
+
+      if (nft?.isMetadataFrozen) {
+        const metadata = {
+          saleType,
+          collectibleCategory,
+          productKeyAccessTokenCategory,
+          productKeyVirtualAssetCategory,
+          isSensitiveContent,
+          descriptions,
+          propertiesKey,
+          propertiesValue,
+          imagesKey,
+          imagesValue,
+          levelsKey,
+          levelsValueNum,
+          levelsValueDen,
+        }
+        data = { ...data, ...metadata }
+      }
+      let modifiedNft = await prisma.nFT.update({
+        where: { tokenId },
+        data: data,
+      })
+      res.json(modifiedNft)
+    } catch (error) {
+      console.log(error)
+      return res
+        .status(400)
+        .json({ error: `Error while putting token ${tokenId} on sale` })
     }
-    let modifiedNft = await prisma.nFT.update({
-      where: { tokenId },
-      data: data,
-    })
-    res.json(modifiedNft)
-  } catch (error) {
-    console.log(error)
-    return res
-      .status(400)
-      .json({ error: `Error while putting token ${tokenId} on sale` })
-  }
-})
+  },
+)
 
 /* Puts the NFT off market */
-router.put('/off-market/:tokenId', async (req: Request, res: Response) => {
-  let tokenId: string | number = req.params.tokenId
-  tokenId = parseInt(tokenId)
-  try {
-    const data = nftSaleLeaseAuctionInitializer
-    let nft = await prisma.nFT.update({
-      where: { tokenId },
-      data: data,
-    })
-    res.json(nft)
-  } catch (error) {
-    console.log(error)
-    return res
-      .status(500)
-      .json({ error: `Error while putting token ${tokenId} off sale` })
-  }
-})
+router.put(
+  '/off-market/:tokenId',
+  checkForErrors,
+  async (req: Request, res: Response) => {
+    let tokenId: string | number = req.params.tokenId
+    tokenId = parseInt(tokenId)
+    try {
+      const data = nftSaleLeaseAuctionInitializer
+      let nft = await prisma.nFT.update({
+        where: { tokenId },
+        data: data,
+      })
+      res.json(nft)
+    } catch (error) {
+      console.log(error)
+      return res
+        .status(500)
+        .json({ error: `Error while putting token ${tokenId} off sale` })
+    }
+  },
+)
 
 /* Edits the data of the NFT */
 router.put(
@@ -430,21 +439,25 @@ router.put(
 )
 
 /* Deletes the NFT */
-router.delete('/:tokenId', async (req: Request, res: Response) => {
-  let tokenId: string | number = req.params.tokenId
-  tokenId = parseInt(tokenId)
-  try {
-    await prisma.nFT.delete({
-      where: { tokenId },
-    })
-    return res.json({ message: `Deleted the NFT: ${tokenId}` })
-  } catch (error) {
-    console.log(error)
-    return res.status(500).json({
-      error: `Error in the server while deleting NFT: ${tokenId}`,
-    })
-  }
-})
+router.delete(
+  '/:tokenId',
+  checkForErrors,
+  async (req: Request, res: Response) => {
+    let tokenId: string | number = req.params.tokenId
+    tokenId = parseInt(tokenId)
+    try {
+      await prisma.nFT.delete({
+        where: { tokenId },
+      })
+      return res.json({ message: `Deleted the NFT: ${tokenId}` })
+    } catch (error) {
+      console.log(error)
+      return res.status(500).json({
+        error: `Error in the server while deleting NFT: ${tokenId}`,
+      })
+    }
+  },
+)
 
 /* Fetches all NFTs */
 router.get('/', async (req: Request, res: Response) => {
@@ -565,5 +578,112 @@ router.get('/:tokenId', async (req: Request, res: Response) => {
       .json({ error: `Error occurred while fetching NFT: ${tokenId}` })
   }
 })
+
+/* like functions starts */
+
+/* Fetches an NFT's like counts */
+router.get('/likes/:tokenId', async (req: Request, res: Response) => {
+  let tokenId: string | number = req.params.tokenId
+  tokenId = parseInt(tokenId)
+  try {
+    const nft = await prisma.nFT.findUnique({
+      where: { tokenId },
+      select: {
+        likes: true,
+      },
+    })
+    res.json(nft)
+  } catch (error) {
+    console.log(error)
+    res
+      .status(400)
+      .json({ error: `Error occurred while fetching NFT: ${tokenId}` })
+  }
+})
+
+router.put(
+  '/likes/:tokenId',
+  checkForErrors,
+  async (req: Request, res: Response) => {
+    let tokenId: string | number = req.params.tokenId
+    tokenId = parseInt(tokenId)
+    const { address } = req.body
+    try {
+      let nft = await prisma.nFT.findUnique({ where: { tokenId } })
+      if (!nft) throw { error: `NFT with tokenId ${tokenId} does not exist` }
+      let user = await prisma.user.findUnique({ where: { address } })
+      if (!user) throw { error: `Cannot find the user: ${address}` }
+      if (user.likedNfts.includes(tokenId))
+        throw {
+          error: `User has already liked the NFT with tokenId ${tokenId}`,
+        }
+      const dataNft = {
+        likes: nft.likes + 1,
+      }
+      const dataUser = {
+        likedNfts: [...user.likedNfts, tokenId],
+      }
+      nft = await prisma.nFT.update({
+        where: { tokenId },
+        data: dataNft,
+      })
+      user = await prisma.user.update({
+        where: { address },
+        data: dataUser,
+      })
+      res.json([nft, user])
+    } catch (error) {
+      console.log(error)
+      res
+        .status(400)
+        .json({ error: `Error occurred while editing an NFT: ${tokenId}` })
+    }
+  },
+)
+
+router.put(
+  '/unlikes/:tokenId',
+  checkForErrors,
+  async (req: Request, res: Response) => {
+    let tokenId: string | number = req.params.tokenId
+    tokenId = parseInt(tokenId)
+    const { address } = req.body
+    try {
+      let nft = await prisma.nFT.findUnique({ where: { tokenId } })
+      if (!nft) throw { error: `NFT with tokenId ${tokenId} does not exist` }
+      if (nft.likes <= 0)
+        throw { error: `NFT with tokenId ${tokenId} has 0 or less likes` }
+      let user = await prisma.user.findUnique({ where: { address } })
+      if (!user) throw { error: `Cannot find the user: ${address}` }
+      if (!user.likedNfts.includes(tokenId))
+        throw { error: `tokenId not part of user's liked NFTs` }
+      const dataNft = {
+        likes: nft.likes - 1,
+      }
+      const newUserLikedNfts = user.likedNfts.filter(
+        (nftTokenId) => nftTokenId !== tokenId,
+      )
+      const dataUser = {
+        likedNfts: newUserLikedNfts,
+      }
+      nft = await prisma.nFT.update({
+        where: { tokenId },
+        data: dataNft,
+      })
+      user = await prisma.user.update({
+        where: { address },
+        data: dataUser,
+      })
+      res.json([nft, user])
+    } catch (error) {
+      console.log(error)
+      res
+        .status(400)
+        .json({ error: `Error occurred while editing an NFT: ${tokenId}` })
+    }
+  },
+)
+
+/* like functions ends */
 
 export default router
