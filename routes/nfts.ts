@@ -500,6 +500,7 @@ router.get(
   async (req: Request, res: Response) => {
     const tokenIdsEncoded: string = req.params.tokenIdsEncoded
     const tokenIds = decodeTokenIds(tokenIdsEncoded)
+
     try {
       const nfts = []
       for (const tokenId of tokenIds) {
