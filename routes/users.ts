@@ -308,4 +308,38 @@ router.put('/:address', checkForErrors, async (req: Request, res: Response) => {
   }
 })
 
+/* Fetches all the likedNfts (tokenIds) from a user */
+router.get('/liked-nfts/:address', async (req: Request, res: Response) => {
+  const address = req.params.address
+  try {
+    const user = await prisma.user.findUnique({
+      where: { address },
+      select: {
+        likedNfts: true,
+      },
+    })
+    return res.json(user)
+  } catch (error) {
+    console.log(error)
+    return res.status(400).json({ error: 'User not found' })
+  }
+})
+
+/* Fetches all the cartNfts (tokenIds) from a user */
+router.get('/cart-nfts/:address', async (req: Request, res: Response) => {
+  const address = req.params.address
+  try {
+    const user = await prisma.user.findUnique({
+      where: { address },
+      select: {
+        cartNfts: true,
+      },
+    })
+    return res.json(user)
+  } catch (error) {
+    console.log(error)
+    return res.status(400).json({ error: 'User not found' })
+  }
+})
+
 export default router
