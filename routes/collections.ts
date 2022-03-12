@@ -95,7 +95,7 @@ router.put(
   checkForErrors,
   async (req: Request, res: Response) => {
     const name = req.params.name
-    const { newName, image, description } = req.body
+    const { newName, image, description, isSameName } = req.body
     const imageTypeChecked = image === null ? undefined : image
     try {
       const imageValidity =
@@ -103,19 +103,21 @@ router.put(
           ? true
           : false
       if (!imageValidity) throw { error: 'Invalid image url' }
+      let collection = await prisma.collection.findUnique({ where: { name } })
+      if (!collection) throw { error: `Cannot find the collection: ${name}` }
+      if (!isSameName) {
+        let existingNewNamedCollection = await prisma.collection.findUnique({
+          where: { name: newName },
+        })
+        if (existingNewNamedCollection)
+          throw { error: `Collection with the name ${newName} already exists` }
+      }
       const data = {
         name: newName,
         description,
         image: imageTypeChecked,
         isNameModified: true,
       }
-      let collection = await prisma.collection.findUnique({ where: { name } })
-      let existingNewNamedCollection = await prisma.collection.findUnique({
-        where: { name: newName },
-      })
-      if (!collection) throw { error: `Cannot find the collection: ${name}` }
-      if (existingNewNamedCollection)
-        throw { error: `Collection with the name ${newName} already exists` }
       collection = await prisma.collection.update({
         where: { name },
         data: data,
