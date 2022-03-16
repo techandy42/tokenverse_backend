@@ -7,6 +7,7 @@ import {
   selectionReview,
 } from '../constants/selections'
 import { isUrlValid, checkForErrors } from '../functions/validations'
+import emptyAddress from '../constants/emptyAddress'
 
 const prisma = new PrismaClient()
 const router = express.Router()
@@ -18,6 +19,8 @@ router.post(
   async (req: Request, res: Response) => {
     const address = req.params.address
     try {
+      if (address === emptyAddress) throw { error: 'user address is empty' }
+
       const lastId = await prisma.collection.findMany({
         orderBy: { id: 'desc' },
         take: 1,
@@ -36,6 +39,7 @@ router.post(
         where: { name },
       })
       // creates the collection with the name `collection-${lastId}`
+      console.log('address: ', address)
       if (!collection) {
         collection = await prisma.collection.create({
           data: {
