@@ -100,12 +100,12 @@ router.put(
   async (req: Request, res: Response) => {
     const name = req.params.name
     const { newName, image, description, isSameName } = req.body
-    const imageTypeChecked = image === null ? undefined : image
+    const imageTypeChecked = image
     try {
       const imageValidity =
-        imageTypeChecked === undefined || isUrlValid(imageTypeChecked)
-          ? true
-          : false
+        imageTypeChecked === null || isUrlValid(imageTypeChecked) ? true : false
+      console.log('imageTypeChecked: ', imageTypeChecked)
+      console.log('imageValidity: ', imageValidity)
       if (!imageValidity) throw { error: 'Invalid image url' }
       let collection = await prisma.collection.findUnique({ where: { name } })
       if (!collection) throw { error: `Cannot find the collection: ${name}` }

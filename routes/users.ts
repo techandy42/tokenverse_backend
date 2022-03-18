@@ -256,12 +256,10 @@ router.put('/:address', checkForErrors, async (req: Request, res: Response) => {
     twitterLink,
     linkedInLink,
   } = req.body
-  const imageTypeChecked = image === null ? undefined : image
+  const imageTypeChecked = image
   try {
     const imageValidity =
-      imageTypeChecked === undefined || isUrlValid(imageTypeChecked)
-        ? true
-        : false
+      imageTypeChecked === null || isUrlValid(imageTypeChecked) ? true : false
     const emailValidity = email === '' || isEmailValid(email) ? true : false
     const mainLinkValidity =
       mainLink === '' || isUrlValid(mainLink) ? true : false

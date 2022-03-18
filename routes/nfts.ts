@@ -40,13 +40,12 @@ router.post(
       collection,
       ercType,
     } = req.body
-    const multimediaFileUrlTypeChecked =
-      multimediaFileUrl === null ? undefined : multimediaFileUrl
+    const multimediaFileUrlTypeChecked = multimediaFileUrl
     try {
       const fileUrlValidity =
         fileUrl === '' || isUrlValid(fileUrl) ? true : false
       const multimediaFileUrlValidity =
-        multimediaFileUrlTypeChecked === undefined ||
+        multimediaFileUrlTypeChecked === null ||
         isUrlValid(multimediaFileUrlTypeChecked)
           ? true
           : false
@@ -115,12 +114,11 @@ router.post(
         const name = names[i]
         const tokenId = tokenIds[i]
         const itemId = itemIds[i]
-        const multimediaFileUrlTypeChecked =
-          multimediaFileUrl === null ? undefined : multimediaFileUrl
+        const multimediaFileUrlTypeChecked = multimediaFileUrl
         const fileUrlValidity =
           fileUrl === '' || isUrlValid(fileUrl) ? true : false
         const multimediaFileUrlValidity =
-          multimediaFileUrlTypeChecked === undefined ||
+          multimediaFileUrlTypeChecked === null ||
           isUrlValid(multimediaFileUrlTypeChecked)
             ? true
             : false
@@ -290,13 +288,12 @@ router.put(
       levelsValueNum,
       levelsValueDen,
     } = req.body
-    const multimediaFileUrlTypeChecked =
-      multimediaFileUrl === null ? undefined : multimediaFileUrl
+    const multimediaFileUrlTypeChecked = multimediaFileUrl
     try {
       const fileUrlValidity =
         fileUrl === '' || isUrlValid(fileUrl) ? true : false
       const multimediaFileUrlValidity =
-        multimediaFileUrlTypeChecked === undefined ||
+        multimediaFileUrlTypeChecked === null ||
         isUrlValid(multimediaFileUrlTypeChecked)
           ? true
           : false
