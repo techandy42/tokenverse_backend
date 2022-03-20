@@ -4,6 +4,9 @@
 // C:\Users\techa> psql -U postgres -h localhost
 // \c tokenverse --> connects to the tokenverse database
 
+// urls being displayed as images are String? (url or undefined)
+// urls being displayed as links are String (url or '')
+
 generator client {
   provider = "prisma-client-js"
 }
