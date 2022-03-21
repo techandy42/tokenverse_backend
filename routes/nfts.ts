@@ -45,8 +45,8 @@ router.post(
       const imageValidity = image === '' || isUrlValid(image) ? true : false
       const animationUrlValidity =
         animationUrl === null || isUrlValid(animationUrl) ? true : false
-      if (!imageValidity) throw { error: 'Invalid fileUrl' }
-      if (!animationUrlValidity) throw { error: 'Invalid multimediaFileUrl' }
+      if (!imageValidity) throw { error: 'Invalid image' }
+      if (!animationUrlValidity) throw { error: 'Invalid animationUrlValidity' }
       const data = {
         // fileUrl --> image
         // multimediaFileUrl --> animationUrl
@@ -106,6 +106,17 @@ router.post(
       ) {
         throw { error: 'The length of the given values are different' }
       }
+      let imagesValidity = true
+      let animationUrlsValidity = true
+      for (let i = 0; i < namesLength; i++) {
+        const image = images[i]
+        const animationUrl = animationUrls[i]
+        imagesValidity = image === '' || isUrlValid(image) ? true : false
+        animationUrlsValidity =
+          animationUrl === null || isUrlValid(animationUrl) ? true : false
+      }
+      if (!imagesValidity) throw { error: 'Invalid images' }
+      if (!animationUrlsValidity) throw { error: 'Invalid animationUrls' }
       const nfts: any = []
       for (let i = 0; i < namesLength; i++) {
         const animationUrl = animationUrls[i]
@@ -113,11 +124,6 @@ router.post(
         const name = names[i]
         const tokenId = tokenIds[i]
         const itemId = itemIds[i]
-        const imageValidity = image === '' || isUrlValid(image) ? true : false
-        const animationUrlValidity =
-          animationUrl === null || isUrlValid(animationUrl) ? true : false
-        if (!imageValidity) throw { error: 'Invalid fileUrl' }
-        if (!animationUrlValidity) throw { error: 'Invalid multimediaFileUrl' }
         const data = {
           // fileUrl --> image
           // multimediaFileUrl --> animationUrl
@@ -179,6 +185,18 @@ router.put(
       //
     } = req.body
     try {
+      let imagesValidity = true
+      for (let i = 0; i < images.length; i++) {
+        const image = images[i]
+        imagesValidity = image === '' || isUrlValid(image) ? true : false
+      }
+      const externalUrlValidity =
+        externalUrl === '' || isUrlValid(externalUrl) ? true : false
+      const youtubeUrlValidity =
+        youtubeUrl === '' || isUrlValid(youtubeUrl) ? true : false
+      if (!imagesValidity) throw { error: 'Invalid images' }
+      if (!externalUrlValidity) throw { error: 'Invalid externalUrl' }
+      if (!youtubeUrlValidity) throw { error: 'Invalid youtubeUrl' }
       let nft = await prisma.nFT.findUnique({
         where: { tokenId },
       })
@@ -279,8 +297,20 @@ router.put(
       const imageValidity = image === '' || isUrlValid(image) ? true : false
       const animationUrlValidity =
         animationUrl === null || isUrlValid(animationUrl) ? true : false
-      if (!imageValidity) throw { error: 'Invalid fileUrl' }
-      if (!animationUrlValidity) throw { error: 'Invalid multimediaFileUrl' }
+      let imagesValidity = true
+      for (let i = 0; i < images.length; i++) {
+        const image = images[i]
+        imagesValidity = image === '' || isUrlValid(image) ? true : false
+      }
+      const externalUrlValidity =
+        externalUrl === '' || isUrlValid(externalUrl) ? true : false
+      const youtubeUrlValidity =
+        youtubeUrl === '' || isUrlValid(youtubeUrl) ? true : false
+      if (!imageValidity) throw { error: 'Invalid image' }
+      if (!animationUrlValidity) throw { error: 'Invalid animationUrl' }
+      if (!imagesValidity) throw { error: 'Invalid images' }
+      if (!externalUrlValidity) throw { error: 'Invalid externalUrl' }
+      if (!youtubeUrlValidity) throw { error: 'Invalid youtubeUrl' }
       let nft = await prisma.nFT.findUnique({
         where: { tokenId },
         select: {

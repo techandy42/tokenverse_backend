@@ -1,0 +1,269 @@
+Creating a User:
+
+type:
+POST
+
+header:
+http://localhost:5000/users
+
+body:
+{
+    "address": "0x90F79bf6EB2c4f870365E785982E1f101E93b906"
+}
+
+result:
+{
+    "id": 39,
+    "email": "",
+    "address": "0x90F79bf6EB2c4f870365E785982E1f101E93b906",
+    "companyName": "",
+    "createdAt": "2022-03-21T17:20:23.323Z",
+    "description": "",
+    "facebookLink": "",
+    "image": null,
+    "instagramLink": "",
+    "linkedInLink": "",
+    "mainLink": "",
+    "twitterLink": "",
+    "updatedAt": "2022-03-21T17:20:23.326Z",
+    "userName": "0x90F79bf6EB2c4f870365E785982E1f101E93b906",
+    "uuid": "006a5e99-8b30-443d-a833-474fbede8e6c",
+    "verified": false,
+    "verificationDate": null,
+    "role": "USER",
+    "likedNfts": [],
+    "cartNfts": []
+}
+
+===============================
+
+Creating a collection
+
+type:
+POST
+
+header:
+http://localhost:5000/collections/0x90F79bf6EB2c4f870365E785982E1f101E93b906
+
+body:
+None
+
+result:
+{
+    "image": null,
+    "description": "",
+    "id": 164,
+    "uuid": "176aa696-ae78-4e3b-a6d2-9ac3b6b96299",
+    "createdAt": "2022-03-21T17:23:30.076Z",
+    "updatedAt": "2022-03-21T17:23:30.077Z",
+    "name": "collection-164",
+    "isNameModified": false,
+    "userId": 39
+}
+
+===============================
+
+type:
+POST 
+
+header:
+http://localhost:5000/nfts 
+
+body:
+{
+    "address": "0x90F79bf6EB2c4f870365E785982E1f101E93b906",
+    "name": "this is for testing",
+    "blockchainType": "POLYGON",
+    "image": "https://google.com",
+    "animationUrl": "http://google.com",
+    "tokenId": 1,
+    "itemId": 1,
+    "collection": "collection-164",
+    "ercType": "ERC_721"
+}
+
+result:
+{
+    "id": 105,
+    "uuid": "9f1b9837-b557-4792-8c2c-36c0873581dc",
+    "createdAt": "2022-03-21T17:37:59.975Z",
+    "updatedAt": "2022-03-21T17:37:59.976Z",
+    "blockchainType": "POLYGON",
+    "price": 0,
+    "isOnSale": false,
+    "isOnLease": false,
+    "isOnAuction": false,
+    "isMetadataFrozen": false,
+    "tokenId": 1,
+    "itemId": 1,
+    "userId": 39,
+    "collectionId": 164,
+    "creatorId": 39,
+    "startSaleDate": "2022-03-21T17:37:59.975Z",
+    "endSaleDate": "2022-03-21T17:37:59.975Z",
+    "saleType": "COLLECTIBLE",
+    "collectibleCategory": "MISCELLANEOUS",
+    "productKeyAccessTokenCategory": "MISCELLANEOUS",
+    "productKeyVirtualAssetCategory": "MISCELLANEOUS",
+    "isSensitiveContent": false,
+    "ercType": "ERC_721",
+    "likes": 0,
+    "images": [],
+    "descriptions": [],
+    "image": "https://google.com",
+    "animationUrl": "http://google.com",
+    "externalUrl": "",
+    "youtubeUrl": "",
+    "description": "",
+    "name": "this is for testing",
+    "attributes": {}
+}
+
+===============================
+
+type:
+POST
+
+header:
+http://localhost:5000/nfts/multiple
+
+body:
+{
+    "address": "0x90F79bf6EB2c4f870365E785982E1f101E93b906",
+    "names": ["one", "two", "three"],
+    "blockchainType": "POLYGON",
+    "images": ["https://google.com", "https://google.com", "https://google.com"],
+    "animationUrls": ["https://google.com", "https://google.com", "https://google.com"],
+    "tokenIds": [2, 3, 4],
+    "itemIds": [2, 3, 4],
+    "collection": "collection-164",
+    "ercType": "ERC_721"
+}
+
+result:
+[
+    {
+        "id": 106,
+        "uuid": "0006ef63-5ebd-441f-8b6d-2c8fa23a96ad",
+        "createdAt": "2022-03-21T17:40:30.420Z",
+        "updatedAt": "2022-03-21T17:40:30.421Z",
+        "blockchainType": "POLYGON",
+        "price": 0,
+        "isOnSale": false,
+        "isOnLease": false,
+        "isOnAuction": false,
+        "isMetadataFrozen": false,
+        "tokenId": 2,
+        "itemId": 2,
+        "userId": 39,
+        "collectionId": 164,
+        "creatorId": 39,
+        "startSaleDate": "2022-03-21T17:40:30.420Z",
+        "endSaleDate": "2022-03-21T17:40:30.420Z",
+        "saleType": "COLLECTIBLE",
+        "collectibleCategory": "MISCELLANEOUS",
+        "productKeyAccessTokenCategory": "MISCELLANEOUS",
+        "productKeyVirtualAssetCategory": "MISCELLANEOUS",
+        "isSensitiveContent": false,
+        "ercType": "ERC_721",
+        "likes": 0,
+        "images": [],
+        "descriptions": [],
+        "image": "https://google.com",
+        "animationUrl": "https://google.com",
+        "externalUrl": "",
+        "youtubeUrl": "",
+        "description": "",
+        "name": "one",
+        "attributes": {}
+    },
+    {
+        "id": 107,
+        "uuid": "2ecab640-6090-4a53-b8bb-027f85626722",
+        "createdAt": "2022-03-21T17:40:30.431Z",
+        "updatedAt": "2022-03-21T17:40:30.432Z",
+        "blockchainType": "POLYGON",
+        "price": 0,
+        "isOnSale": false,
+        "isOnLease": false,
+        "isOnAuction": false,
+        "isMetadataFrozen": false,
+        "tokenId": 3,
+        "itemId": 3,
+        "userId": 39,
+        "collectionId": 164,
+        "creatorId": 39,
+        "startSaleDate": "2022-03-21T17:40:30.431Z",
+        "endSaleDate": "2022-03-21T17:40:30.431Z",
+        "saleType": "COLLECTIBLE",
+        "collectibleCategory": "MISCELLANEOUS",
+        "productKeyAccessTokenCategory": "MISCELLANEOUS",
+        "productKeyVirtualAssetCategory": "MISCELLANEOUS",
+        "isSensitiveContent": false,
+        "ercType": "ERC_721",
+        "likes": 0,
+        "images": [],
+        "descriptions": [],
+        "image": "https://google.com",
+        "animationUrl": "https://google.com",
+        "externalUrl": "",
+        "youtubeUrl": "",
+        "description": "",
+        "name": "two",
+        "attributes": {}
+    },
+    {
+        "id": 108,
+        "uuid": "5fa6c09e-52ab-4acb-bdf8-828c7acd4bee",
+        "createdAt": "2022-03-21T17:40:30.438Z",
+        "updatedAt": "2022-03-21T17:40:30.439Z",
+        "blockchainType": "POLYGON",
+        "price": 0,
+        "isOnSale": false,
+        "isOnLease": false,
+        "isOnAuction": false,
+        "isMetadataFrozen": false,
+        "tokenId": 4,
+        "itemId": 4,
+        "userId": 39,
+        "collectionId": 164,
+        "creatorId": 39,
+        "startSaleDate": "2022-03-21T17:40:30.438Z",
+        "endSaleDate": "2022-03-21T17:40:30.438Z",
+        "saleType": "COLLECTIBLE",
+        "collectibleCategory": "MISCELLANEOUS",
+        "productKeyAccessTokenCategory": "MISCELLANEOUS",
+        "productKeyVirtualAssetCategory": "MISCELLANEOUS",
+        "isSensitiveContent": false,
+        "ercType": "ERC_721",
+        "likes": 0,
+        "images": [],
+        "descriptions": [],
+        "image": "https://google.com",
+        "animationUrl": "https://google.com",
+        "externalUrl": "",
+        "youtubeUrl": "",
+        "description": "",
+        "name": "three",
+        "attributes": {}
+    }
+]
+
+===============================
+
+{
+    "price": 1000,
+    "isOnSale": true,
+    "isOnLease": false,
+    "isOnAuction": false,
+    "startSaleDate": "2022-02-19T00:03:28.318Z",
+    "endSaleDate": "2022-02-19T00:03:28.318Z",
+    "saleType": "COLLECTIBLE",
+    "collectibleCategory": "EXCLUSIVE",
+    "productKeyAccessTokenCategory": "MISCELLANEOUS",
+    "productKeyVirtualAssetCategory": "MISCELLANEOUS",
+    "isSensitiveContent": false,
+    "descriptions": ["a", "b", "c"],
+    "images": ["https://google.com", "https://google.com", "https://google.com"]
+    
+}
