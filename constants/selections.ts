@@ -22,8 +22,10 @@ export const selectionNFT = {
   createdAt: true,
   name: true,
   blockchainType: true,
-  fileUrl: true,
-  multimediaFileUrl: true,
+  // changed names
+  image: true,
+  animationUrl: true,
+  //
   price: true,
   isOnSale: true,
   isOnLease: true,
@@ -41,13 +43,13 @@ export const selectionNFT = {
   ercType: true,
   likes: true,
   descriptions: true,
-  propertiesKey: true,
-  propertiesValue: true,
-  imagesKey: true,
-  imagesValue: true,
-  levelsKey: true,
-  levelsValueNum: true,
-  levelsValueDen: true,
+  // newly added fields
+  images: true,
+  externalUrl: true,
+  youtubeUrl: true,
+  description: true,
+  attributes: true,
+  //
 }
 
 export const selectionReview = {

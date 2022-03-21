@@ -1,0 +1,35 @@
+functions:
+selections.ts <-- check
+nftTransferInitializer.ts <-- check
+
+constants:
+initializers.ts <-- check
+
+routes:
+nfts.ts
+
+========================================
+
+Changes:
+
+Name Change:
+fileUrl → image
+multimediaFileUrl → animationUrl
+
+From:
+propertiesKey
+propertiesValue
+imagesKey
+imagesValue
+levelsKey
+levelsValueNum
+levelsValueDen
+
+To:
+images (String[]) → input [] as default
+externalUrl (String) has default
+youtubeUrl (String) has default
+description (String) has default
+attributes (Json) has default
+
+========================================

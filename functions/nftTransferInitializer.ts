@@ -1,8 +1,10 @@
 const nftTransferInitializer = (nft: any) => {
   const data = {
     name: nft.name,
-    fileUrl: nft.fileUrl,
-    multimediaFileUrl: nft.multimediaFileUrl,
+    // changed names
+    image: nft.image,
+    animationUrl: nft.animationUrl,
+    //
     isMetadataFrozen: nft.isMetadataFrozen,
     collection: nft.collection,
     saleType: nft.saleType,
@@ -11,17 +13,17 @@ const nftTransferInitializer = (nft: any) => {
     productKeyVirtualAssetCategory: nft.productKeyVirtualAssetCategory,
     isSensitiveContent: nft.isSensitiveContent,
     descriptions: nft.descriptions,
-    propertiesKey: nft.propertiesKey,
-    propertiesValue: nft.propertiesValue,
-    imagesKey: nft.imagesKey,
-    imagesValue: nft.imagesValue,
-    levelsKey: nft.levelsKey,
-    levelsValueNum: nft.levelsValueNum,
-    levelsValueDen: nft.levelsValueDen,
     blockchainType: nft.blockchainType,
     tokenId: nft.tokenId,
     itemId: nft.itemId,
     ercType: nft.ercType,
+    // newly added fields
+    images: true,
+    externalUrl: true,
+    youtubeUrl: true,
+    description: true,
+    attributes: true,
+    //
   }
   return data
 }

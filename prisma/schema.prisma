@@ -50,11 +50,7 @@ model NFT {
   uuid               String     @unique @default(uuid())
   createdAt          DateTime   @default(now()) @map("created_at")
   updatedAt          DateTime   @updatedAt @map("updated_at")
-  name               String     
   blockchainType     BlockchainType     @map("blockchain_type")
-  fileUrl            String     @map("file_url")
-  // File     
-  multimediaFileUrl  String?    @map("multimedia_file_url")    
   price              Int        @default(0)
   isOnSale           Boolean    @default(false) @map("is_on_sale")
   isOnLease          Boolean    @default(false) @map("is_on_lease")
@@ -77,15 +73,20 @@ model NFT {
   isSensitiveContent Boolean    @default(false) @map("is_sensitive_content")
   ercType            ErcType    @map("erc_type")
   likes              Int        @default(0)
+  // additional images for the NFT
+  images             String[]
+  // additional descriptions for the NFT
   descriptions       String[]
-  propertiesKey      String[]
-  propertiesValue    String[]
-  imagesKey          String[]
-  imagesValue        String[]
-  levelsKey          String[]
-  levelsValueNum     Int[]
-  levelsValueDen     Int[]
-  reviews            Review[]   
+  reviews            Review[]
+
+  // metadata info
+  image             String      
+  animationUrl      String?    @map("animation_url")
+  externalUrl       String     @default("") @map("external_url")
+  youtubeUrl        String     @default("") @map("youtube_url")
+  description       String     @default("") 
+  name              String     
+  attributes        Json       @default("{}")      
   @@map("nfts")
 }
 
