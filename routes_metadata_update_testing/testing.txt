@@ -251,6 +251,14 @@ result:
 
 ===============================
 
+type:
+PUT
+
+header:
+http://localhost:5000/nfts/on-market/2
+(also tested on token_id=1 with same result)
+
+body:
 {
     "price": 1000,
     "isOnSale": true,
@@ -264,6 +272,427 @@ result:
     "productKeyVirtualAssetCategory": "MISCELLANEOUS",
     "isSensitiveContent": false,
     "descriptions": ["a", "b", "c"],
-    "images": ["https://google.com", "https://google.com", "https://google.com"]
-    
+    "images": ["https://google.com", "https://google.com", "https://google.com"],
+    "externalUrl": "https://google.com",
+    "youtubeUrl": "https://google.com",
+    "description": "hello world",
+    "attributes": [
+    {
+      "trait_type": "Base", 
+      "value": "Starfish"
+    }, 
+    {
+      "trait_type": "Eyes", 
+      "value": "Big"
+    }, 
+    {
+      "trait_type": "Mouth", 
+      "value": "Surprised"
+    }, 
+    {
+      "trait_type": "Level", 
+      "value": 5
+    }, 
+    {
+      "trait_type": "Stamina", 
+      "value": 1.4
+    }, 
+    {
+      "trait_type": "Personality", 
+      "value": "Sad"
+    }, 
+    {
+      "display_type": "boost_number", 
+      "trait_type": "Aqua Power", 
+      "value": 40
+    }, 
+    {
+      "display_type": "boost_percentage", 
+      "trait_type": "Stamina Increase", 
+      "value": 10
+    }, 
+    {
+      "display_type": "number", 
+      "trait_type": "Generation", 
+      "value": 2
+    },
+    {
+      "value": "Happy"
+    },
+    {
+      "display_type": "date", 
+      "trait_type": "birthday", 
+      "value": 1546360800
+    }
+  ]
 }
+
+result:
+{
+    "id": 106,
+    "uuid": "0006ef63-5ebd-441f-8b6d-2c8fa23a96ad",
+    "createdAt": "2022-03-21T17:40:30.420Z",
+    "updatedAt": "2022-03-21T18:57:45.072Z",
+    "blockchainType": "POLYGON",
+    "price": 1000,
+    "isOnSale": true,
+    "isOnLease": false,
+    "isOnAuction": false,
+    "isMetadataFrozen": false,
+    "tokenId": 2,
+    "itemId": 2,
+    "userId": 39,
+    "collectionId": 164,
+    "creatorId": 39,
+    "startSaleDate": "2022-02-19T00:03:28.318Z",
+    "endSaleDate": "2022-02-19T00:03:28.318Z",
+    "saleType": "COLLECTIBLE",
+    "collectibleCategory": "EXCLUSIVE",
+    "productKeyAccessTokenCategory": "MISCELLANEOUS",
+    "productKeyVirtualAssetCategory": "MISCELLANEOUS",
+    "isSensitiveContent": false,
+    "ercType": "ERC_721",
+    "likes": 0,
+    "images": [
+        "https://google.com",
+        "https://google.com",
+        "https://google.com"
+    ],
+    "descriptions": [
+        "a",
+        "b",
+        "c"
+    ],
+    "image": "https://google.com",
+    "animationUrl": "https://google.com",
+    "externalUrl": "https://google.com",
+    "youtubeUrl": "https://google.com",
+    "description": "hello world",
+    "name": "one",
+    "attributes": [
+        {
+            "value": "Starfish",
+            "trait_type": "Base"
+        },
+        {
+            "value": "Big",
+            "trait_type": "Eyes"
+        },
+        {
+            "value": "Surprised",
+            "trait_type": "Mouth"
+        },
+        {
+            "value": 5,
+            "trait_type": "Level"
+        },
+        {
+            "value": 1.4,
+            "trait_type": "Stamina"
+        },
+        {
+            "value": "Sad",
+            "trait_type": "Personality"
+        },
+        {
+            "value": 40,
+            "trait_type": "Aqua Power",
+            "display_type": "boost_number"
+        },
+        {
+            "value": 10,
+            "trait_type": "Stamina Increase",
+            "display_type": "boost_percentage"
+        },
+        {
+            "value": 2,
+            "trait_type": "Generation",
+            "display_type": "number"
+        },
+        {
+            "value": "Happy"
+        },
+        {
+            "value": 1546360800,
+            "trait_type": "birthday",
+            "display_type": "date"
+        }
+    ]
+}
+
+===============================
+
+type:
+PUT 
+
+header:
+http://localhost:5000/nfts/off-market/2
+
+body:
+None
+
+result:
+{
+    "id": 106,
+    "uuid": "0006ef63-5ebd-441f-8b6d-2c8fa23a96ad",
+    "createdAt": "2022-03-21T17:40:30.420Z",
+    "updatedAt": "2022-03-21T18:59:28.061Z",
+    "blockchainType": "POLYGON",
+    "price": 0,
+    "isOnSale": false,
+    "isOnLease": false,
+    "isOnAuction": false,
+    "isMetadataFrozen": false,
+    "tokenId": 2,
+    "itemId": 2,
+    "userId": 39,
+    "collectionId": 164,
+    "creatorId": 39,
+    "startSaleDate": "1899-12-31T05:00:00.000Z",
+    "endSaleDate": "1899-12-31T05:00:00.000Z",
+    "saleType": "COLLECTIBLE",
+    "collectibleCategory": "EXCLUSIVE",
+    "productKeyAccessTokenCategory": "MISCELLANEOUS",
+    "productKeyVirtualAssetCategory": "MISCELLANEOUS",
+    "isSensitiveContent": false,
+    "ercType": "ERC_721",
+    "likes": 0,
+    "images": [
+        "https://google.com",
+        "https://google.com",
+        "https://google.com"
+    ],
+    "descriptions": [
+        "a",
+        "b",
+        "c"
+    ],
+    "image": "https://google.com",
+    "animationUrl": "https://google.com",
+    "externalUrl": "https://google.com",
+    "youtubeUrl": "https://google.com",
+    "description": "hello world",
+    "name": "one",
+    "attributes": [
+        {
+            "value": "Starfish",
+            "trait_type": "Base"
+        },
+        {
+            "value": "Big",
+            "trait_type": "Eyes"
+        },
+        {
+            "value": "Surprised",
+            "trait_type": "Mouth"
+        },
+        {
+            "value": 5,
+            "trait_type": "Level"
+        },
+        {
+            "value": 1.4,
+            "trait_type": "Stamina"
+        },
+        {
+            "value": "Sad",
+            "trait_type": "Personality"
+        },
+        {
+            "value": 40,
+            "trait_type": "Aqua Power",
+            "display_type": "boost_number"
+        },
+        {
+            "value": 10,
+            "trait_type": "Stamina Increase",
+            "display_type": "boost_percentage"
+        },
+        {
+            "value": 2,
+            "trait_type": "Generation",
+            "display_type": "number"
+        },
+        {
+            "value": "Happy"
+        },
+        {
+            "value": 1546360800,
+            "trait_type": "birthday",
+            "display_type": "date"
+        }
+    ]
+}
+
+===============================
+
+type:
+PUT 
+
+header:
+http://localhost:5000/nfts/edit/4
+(also tested on token_id=3)
+(isMetadataFrozen validation works)
+
+body:
+{
+    "name": "this is for testing",
+    "image": "https://google.com",
+    "animationUrl": "https://google.com",
+    "isMetadataFrozen": true,
+    "collection": "collection-164",
+    "saleType": "COLLECTIBLE",
+    "collectibleCategory": "EXCLUSIVE",
+    "productKeyAccessTokenCategory": "MISCELLANEOUS",
+    "productKeyVirtualAssetCategory": "MISCELLANEOUS",
+    "isSensitiveContent": false,
+    "descriptions": ["a", "b", "c"],
+    "images": ["https://google.com", "https://google.com", "https://google.com"],
+    "externalUrl": "https://google.com",
+    "youtubeUrl": "https://google.com",
+    "description": "hello world",
+    "attributes": [
+    {
+      "trait_type": "Base", 
+      "value": "Starfish"
+    }, 
+    {
+      "trait_type": "Eyes", 
+      "value": "Big"
+    }, 
+    {
+      "trait_type": "Mouth", 
+      "value": "Surprised"
+    }, 
+    {
+      "trait_type": "Level", 
+      "value": 5
+    }, 
+    {
+      "trait_type": "Stamina", 
+      "value": 1.4
+    }, 
+    {
+      "trait_type": "Personality", 
+      "value": "Sad"
+    }, 
+    {
+      "display_type": "boost_number", 
+      "trait_type": "Aqua Power", 
+      "value": 40
+    }, 
+    {
+      "display_type": "boost_percentage", 
+      "trait_type": "Stamina Increase", 
+      "value": 10
+    }, 
+    {
+      "display_type": "number", 
+      "trait_type": "Generation", 
+      "value": 2
+    },
+    {
+      "value": "Happy"
+    },
+    {
+      "display_type": "date", 
+      "trait_type": "birthday", 
+      "value": 1546360800
+    }
+  ]
+}
+
+result:
+{
+    "id": 113,
+    "uuid": "ff71ef70-5546-47c6-9953-df4ea27121ff",
+    "createdAt": "2022-03-21T19:05:13.669Z",
+    "updatedAt": "2022-03-21T19:05:13.670Z",
+    "blockchainType": "POLYGON",
+    "price": 0,
+    "isOnSale": false,
+    "isOnLease": false,
+    "isOnAuction": false,
+    "isMetadataFrozen": true,
+    "tokenId": 4,
+    "itemId": 4,
+    "userId": 39,
+    "collectionId": 164,
+    "creatorId": 39,
+    "startSaleDate": "2022-03-21T19:05:13.669Z",
+    "endSaleDate": "2022-03-21T19:05:13.669Z",
+    "saleType": "COLLECTIBLE",
+    "collectibleCategory": "EXCLUSIVE",
+    "productKeyAccessTokenCategory": "MISCELLANEOUS",
+    "productKeyVirtualAssetCategory": "MISCELLANEOUS",
+    "isSensitiveContent": false,
+    "ercType": "ERC_721",
+    "likes": 0,
+    "images": [
+        "https://google.com",
+        "https://google.com",
+        "https://google.com"
+    ],
+    "descriptions": [
+        "a",
+        "b",
+        "c"
+    ],
+    "image": "https://google.com",
+    "animationUrl": "https://google.com",
+    "externalUrl": "https://google.com",
+    "youtubeUrl": "https://google.com",
+    "description": "hello world",
+    "name": "this is for testing",
+    "attributes": [
+        {
+            "value": "Starfish",
+            "trait_type": "Base"
+        },
+        {
+            "value": "Big",
+            "trait_type": "Eyes"
+        },
+        {
+            "value": "Surprised",
+            "trait_type": "Mouth"
+        },
+        {
+            "value": 5,
+            "trait_type": "Level"
+        },
+        {
+            "value": 1.4,
+            "trait_type": "Stamina"
+        },
+        {
+            "value": "Sad",
+            "trait_type": "Personality"
+        },
+        {
+            "value": 40,
+            "trait_type": "Aqua Power",
+            "display_type": "boost_number"
+        },
+        {
+            "value": 10,
+            "trait_type": "Stamina Increase",
+            "display_type": "boost_percentage"
+        },
+        {
+            "value": 2,
+            "trait_type": "Generation",
+            "display_type": "number"
+        },
+        {
+            "value": "Happy"
+        },
+        {
+            "value": 1546360800,
+            "trait_type": "birthday",
+            "display_type": "date"
+        }
+    ]
+}
+
+===============================

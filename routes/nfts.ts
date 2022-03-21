@@ -209,7 +209,7 @@ router.put(
         endSaleDate,
       }
 
-      if (nft?.isMetadataFrozen) {
+      if (!nft?.isMetadataFrozen) {
         const metadata = {
           saleType,
           collectibleCategory,
