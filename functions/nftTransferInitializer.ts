@@ -18,11 +18,11 @@ const nftTransferInitializer = (nft: any) => {
     itemId: nft.itemId,
     ercType: nft.ercType,
     // newly added fields
-    images: true,
-    externalUrl: true,
-    youtubeUrl: true,
-    description: true,
-    attributes: true,
+    images: nft.images,
+    externalUrl: nft.externalUrl,
+    youtubeUrl: nft.youtubeUrl,
+    description: nft.description,
+    attributes: nft.attributes,
     //
   }
   return data
