@@ -8,6 +8,7 @@
 // urls being displayed as links are String (url or '')
 
 // remove the user field in NFT, as it can change in another platform
+// remove all metadata fields in NFT, as it can change in another platform
 
 generator client {
   provider = "prisma-client-js"
